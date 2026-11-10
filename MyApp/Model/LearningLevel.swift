@@ -8,14 +8,17 @@ struct LearningLevel: Hashable, Identifiable {
     let color: Color
     let position: CGPoint
     let isBoss: Bool
+    let trail: AdventureRoute?
 
-    var id: Int { number }
+    var id: String {
+        "\(trail?.rawValue ?? "boss")-\(number)"
+    }
 
     static func == (lhs: LearningLevel, rhs: LearningLevel) -> Bool {
-        lhs.number == rhs.number
+        lhs.id == rhs.id
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(number)
+        hasher.combine(id)
     }
 }

@@ -21,13 +21,13 @@ struct GameMapView: View {
                         ForEach(AdventureRoute.allCases) { route in
                             RoutePath(
                                 route: route,
-                                levels: viewModel.levels,
+                                levels: viewModel.levelsByRoute[route] ?? [],
                                 boss: viewModel.boss,
                                 isSelected: route == viewModel.selectedRoute
                             )
                         }
 
-                        ForEach(viewModel.levels) { level in
+                        ForEach(viewModel.allLevels) { level in
                             NavigationLink(value: level) {
                                 LevelNode(level: level)
                             }
@@ -41,7 +41,7 @@ struct GameMapView: View {
                         .buttonStyle(.plain)
                         .position(viewModel.boss.position)
                     }
-                    .frame(width: 1120, height: 760)
+                    .frame(width: 1160, height: 900)
                 }
                 .ignoresSafeArea(edges: .bottom)
 
@@ -122,22 +122,28 @@ private struct RoutePath: View {
 
     private var routeShape: Path {
         Path { path in
-            path.move(to: levels[0].position)
-            switch route {
-            case .sunny:
-                path.addCurve(to: levels[1].position, control1: CGPoint(x: 210, y: 390), control2: CGPoint(x: 300, y: 410))
-                path.addCurve(to: levels[2].position, control1: CGPoint(x: 450, y: 260), control2: CGPoint(x: 550, y: 620))
-                path.addCurve(to: levels[3].position, control1: CGPoint(x: 680, y: 400), control2: CGPoint(x: 720, y: 260))
-            case .forest:
-                path.addCurve(to: levels[1].position, control1: CGPoint(x: 185, y: 650), control2: CGPoint(x: 300, y: 540))
-                path.addCurve(to: levels[2].position, control1: CGPoint(x: 450, y: 180), control2: CGPoint(x: 530, y: 320))
-                path.addCurve(to: levels[3].position, control1: CGPoint(x: 690, y: 610), control2: CGPoint(x: 720, y: 390))
-            case .rainbow:
-                path.addCurve(to: levels[1].position, control1: CGPoint(x: 280, y: 500), control2: CGPoint(x: 280, y: 180))
-                path.addCurve(to: levels[2].position, control1: CGPoint(x: 430, y: 350), control2: CGPoint(x: 520, y: 700))
-                path.addCurve(to: levels[3].position, control1: CGPoint(x: 680, y: 200), control2: CGPoint(x: 690, y: 100))
+            guard let firstLevel = levels.first, let lastLevel = levels.last else {
+                return
             }
-            path.addCurve(to: boss.position, control1: CGPoint(x: 850, y: 160), control2: CGPoint(x: 900, y: 125))
+
+            path.move(to: firstLevel.position)
+
+            for index in 1..<levels.count {
+                let previous = levels[index - 1].position
+                let current = levels[index].position
+                let curveOffset: CGFloat = route == .forest ? 70 : (route == .rainbow ? -55 : 45)
+                path.addCurve(
+                    to: current,
+                    control1: CGPoint(x: previous.x + 70, y: previous.y + curveOffset),
+                    control2: CGPoint(x: current.x - 70, y: current.y - curveOffset)
+                )
+            }
+
+            path.addCurve(
+                to: boss.position,
+                control1: CGPoint(x: lastLevel.position.x + 90, y: lastLevel.position.y),
+                control2: CGPoint(x: boss.position.x - 110, y: boss.position.y)
+            )
         }
     }
 }
