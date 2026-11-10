@@ -32,6 +32,9 @@
 		C9476103309B9B7500843EB7 = {
 			isa = PBXGroup;
 			children = (
+				C971C26530A3577000A1CC23 /* View */,
+				C971C26430A3576400A1CC23 /* ViewModel */,
+				C971C26330A3575D00A1CC23 /* Model */,
 				C947610E309B9B7500843EB7 /* MyApp */,
 				C947610D309B9B7500843EB7 /* Products */,
 			);
@@ -43,6 +46,27 @@
 				C947610C309B9B7500843EB7 /* MyApp.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C971C26330A3575D00A1CC23 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C971C26430A3576400A1CC23 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C971C26530A3577000A1CC23 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
