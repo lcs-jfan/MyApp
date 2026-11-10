@@ -3,7 +3,7 @@ import SwiftUI
 struct LevelView: View {
     let level: LearningLevel
     let avatar: PlayerAvatar
-    let nextLevel: LearningLevel?
+    let onFinish: () -> Void
 
     var body: some View {
         ZStack {
@@ -29,7 +29,7 @@ struct LevelView: View {
                         NormalBattleView(
                             level: level,
                             avatar: avatar,
-                            nextLevel: nextLevel
+                            onFinish: onFinish
                         )
                     } label: {
                         Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")

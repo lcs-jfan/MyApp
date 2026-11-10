@@ -2,14 +2,13 @@ import SwiftUI
 
 struct NormalBattleView: View {
     @State private var viewModel: NormalBattleViewModel
-    @Environment(\.dismiss) private var dismiss
     let avatar: PlayerAvatar
-    let nextLevel: LearningLevel?
+    let onFinish: () -> Void
 
-    init(level: LearningLevel, avatar: PlayerAvatar, nextLevel: LearningLevel?) {
+    init(level: LearningLevel, avatar: PlayerAvatar, onFinish: @escaping () -> Void) {
         _viewModel = State(initialValue: NormalBattleViewModel(level: level))
         self.avatar = avatar
-        self.nextLevel = nextLevel
+        self.onFinish = onFinish
     }
 
     var body: some View {
@@ -112,30 +111,13 @@ struct NormalBattleView: View {
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
                     .background(viewModel.level.color, in: Capsule())
-            } else if let nextLevel {
-                NavigationLink {
-                    NormalBattleView(
-                        level: nextLevel,
-                        avatar: avatar,
-                        nextLevel: GameMapViewModel().nextLevel(after: nextLevel)
-                    )
-                } label: {
-                    Label("Continue to \(nextLevel.title)", systemImage: "arrow.right.circle.fill")
-                        .font(.subheadline.bold())
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 18)
-                        .padding(.vertical, 10)
-                        .background(viewModel.level.color, in: Capsule())
-                }
             } else {
-                Button("Finish battle") {
-                    dismiss()
-                }
-                .font(.subheadline.bold())
-                .foregroundStyle(.white)
-                .padding(.horizontal, 18)
-                .padding(.vertical, 10)
-                .background(viewModel.level.color, in: Capsule())
+                Button("Return to map", action: onFinish)
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 10)
+                    .background(viewModel.level.color, in: Capsule())
             }
         }
         .accessibilityElement(children: .combine)

@@ -10,7 +10,7 @@ final class NormalBattleViewModel {
 
     init(level: LearningLevel) {
         self.level = level
-        self.questions = Self.questions(for: level)
+        self.questions = Array(Self.questionBank(for: level).shuffled().prefix(5))
     }
 
     var question: BattleQuestion {
@@ -56,7 +56,7 @@ final class NormalBattleViewModel {
         tryAgain()
     }
 
-    private static func questions(for level: LearningLevel) -> [BattleQuestion] {
+    private static func questionBank(for level: LearningLevel) -> [BattleQuestion] {
         if level.number == 1 {
             return [
                 BattleQuestion(
@@ -86,6 +86,46 @@ final class NormalBattleViewModel {
                         AnswerChoice(id: 2, text: "Drum"),
                         AnswerChoice(id: 3, text: "Trumpet"),
                         AnswerChoice(id: 4, text: "Violin")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Why should you never taste an unknown chemical?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "It could be toxic"),
+                        AnswerChoice(id: 2, text: "It might be too cold"),
+                        AnswerChoice(id: 3, text: "It might be too loud"),
+                        AnswerChoice(id: 4, text: "It could change color")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which animal breathes air through lungs?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Whale"),
+                        AnswerChoice(id: 2, text: "Seaweed"),
+                        AnswerChoice(id: 3, text: "Clam"),
+                        AnswerChoice(id: 4, text: "Starfish")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What do marine biologists study?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Life in oceans and seas"),
+                        AnswerChoice(id: 2, text: "Only mountain rocks"),
+                        AnswerChoice(id: 3, text: "Only weather balloons"),
+                        AnswerChoice(id: 4, text: "Only musical instruments")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which part of music keeps a steady pattern?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Rhythm"),
+                        AnswerChoice(id: 2, text: "Paint"),
+                        AnswerChoice(id: 3, text: "Gravity"),
+                        AnswerChoice(id: 4, text: "Temperature")
                     ],
                     correctAnswerID: 1
                 )

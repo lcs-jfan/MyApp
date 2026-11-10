@@ -2,11 +2,12 @@ import SwiftUI
 
 struct GameMapView: View {
     @State private var viewModel = GameMapViewModel()
+    @State private var navigationPath: [LearningLevel] = []
     let avatar: PlayerAvatar
     let onOpenWardrobe: () -> Void
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack(alignment: .top) {
                 ScrollView([.horizontal, .vertical], showsIndicators: false) {
                     ZStack {
@@ -128,7 +129,9 @@ struct GameMapView: View {
                 LevelView(
                     level: level,
                     avatar: avatar,
-                    nextLevel: viewModel.nextLevel(after: level)
+                    onFinish: {
+                        navigationPath.removeAll()
+                    }
                 )
             }
         }
