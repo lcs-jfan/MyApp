@@ -5,6 +5,7 @@ struct GameMapView: View {
     @State private var navigationPath: [LearningLevel] = []
     let avatar: PlayerAvatar
     let onOpenWardrobe: () -> Void
+    let onPrizeWon: (WheelPrize) -> Void
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -139,7 +140,8 @@ struct GameMapView: View {
                     onFinish: {
                         viewModel.markCompleted(level)
                         navigationPath.removeAll()
-                    }
+                    },
+                    onPrizeWon: onPrizeWon
                 )
             }
         }

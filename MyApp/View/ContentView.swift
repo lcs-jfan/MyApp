@@ -15,7 +15,8 @@ struct ContentView: View {
             if viewModel.showsMap {
                 GameMapView(
                     avatar: viewModel.avatar,
-                    onOpenWardrobe: viewModel.openWardrobe
+                    onOpenWardrobe: viewModel.openWardrobe,
+                    onPrizeWon: viewModel.apply
                 )
             } else {
                 WardrobeView(viewModel: viewModel, onReady: viewModel.enterMap)

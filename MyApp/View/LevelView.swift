@@ -4,6 +4,7 @@ struct LevelView: View {
     let level: LearningLevel
     let avatar: PlayerAvatar
     let onFinish: () -> Void
+    let onPrizeWon: (WheelPrize) -> Void
 
     var body: some View {
         ZStack {
@@ -40,6 +41,23 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Starts the \(level.title) learning activity")
+                } else if level.number == 2 {
+                    NavigationLink {
+                        PrizeWheelView(
+                            level: level,
+                            avatar: avatar,
+                            onPrizeWon: onPrizeWon,
+                            onFinish: onFinish
+                        )
+                    } label: {
+                        Text("Play Prize Wheel")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Answer up to three questions to earn a prize wheel spin")
                 } else {
                     Text("This learning activity is coming soon.")
                         .font(.headline)

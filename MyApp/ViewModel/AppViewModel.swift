@@ -12,4 +12,15 @@ final class AppViewModel {
     func openWardrobe() {
         showsMap = false
     }
+
+    func apply(prize: WheelPrize) {
+        switch prize.kind {
+        case .outfit(let outfit):
+            avatar.outfit = outfit
+        case .hair(let hair):
+            avatar.hair = hair
+        case .skinTone(let skinTone):
+            avatar.skinTone = skinTone
+        }
+    }
 }
