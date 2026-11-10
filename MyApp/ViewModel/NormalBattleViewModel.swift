@@ -10,7 +10,18 @@ final class NormalBattleViewModel {
 
     init(level: LearningLevel) {
         self.level = level
-        self.questions = Array(Self.questionBank(for: level).shuffled().prefix(5))
+        self.questions = Array(
+            Self.questionBank(for: level)
+                .shuffled()
+                .prefix(5)
+                .map { question in
+                    BattleQuestion(
+                        prompt: question.prompt,
+                        answers: question.answers.shuffled(),
+                        correctAnswerID: question.correctAnswerID
+                    )
+                }
+        )
     }
 
     var question: BattleQuestion {
