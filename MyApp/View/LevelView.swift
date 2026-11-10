@@ -24,21 +24,30 @@ struct LevelView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                NavigationLink {
-                    NormalBattleView(
-                        level: level,
-                        avatar: avatar,
-                        nextLevel: nextLevel
-                    )
-                } label: {
-                    Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")
-                        .font(.title2.bold())
-                        .foregroundStyle(.white)
+                if level.number == 1 || level.isBoss {
+                    NavigationLink {
+                        NormalBattleView(
+                            level: level,
+                            avatar: avatar,
+                            nextLevel: nextLevel
+                        )
+                    } label: {
+                        Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Starts the \(level.title) learning activity")
+                } else {
+                    Text("This learning activity is coming soon.")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                        .background(.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 18))
                 }
-                .accessibilityHint("Starts the \(level.title) learning activity")
 
                 Text(level.isBoss ? "Answer the final challenge to become a Learning Land legend!" : "More puzzles and rewards are coming soon.")
                     .font(.footnote)

@@ -3,13 +3,22 @@ import Observation
 @Observable
 final class NormalBattleViewModel {
     let level: LearningLevel
-    let question: BattleQuestion
+    private let questions: [BattleQuestion]
+    var questionIndex = 0
     var selectedAnswerID: Int?
     var hasAnswered = false
 
     init(level: LearningLevel) {
         self.level = level
-        self.question = Self.question(for: level)
+        self.questions = Self.questions(for: level)
+    }
+
+    var question: BattleQuestion {
+        questions[questionIndex]
+    }
+
+    var isLastQuestion: Bool {
+        questionIndex == questions.count - 1
     }
 
     var selectedAnswer: AnswerChoice? {
@@ -37,6 +46,53 @@ final class NormalBattleViewModel {
     func tryAgain() {
         selectedAnswerID = nil
         hasAnswered = false
+    }
+
+    func advanceToNextQuestion() {
+        guard !isLastQuestion else {
+            return
+        }
+        questionIndex += 1
+        tryAgain()
+    }
+
+    private static func questions(for level: LearningLevel) -> [BattleQuestion] {
+        if level.number == 1 {
+            return [
+                BattleQuestion(
+                    prompt: "What does “toxic” mean?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Able to harm the body"),
+                        AnswerChoice(id: 2, text: "Very colorful"),
+                        AnswerChoice(id: 3, text: "Easy to carry"),
+                        AnswerChoice(id: 4, text: "Helpful for every person")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which animal is a marine mammal?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Dolphin"),
+                        AnswerChoice(id: 2, text: "Shark"),
+                        AnswerChoice(id: 3, text: "Seaweed"),
+                        AnswerChoice(id: 4, text: "Jellyfish")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which instrument usually has black and white keys?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Piano"),
+                        AnswerChoice(id: 2, text: "Drum"),
+                        AnswerChoice(id: 3, text: "Trumpet"),
+                        AnswerChoice(id: 4, text: "Violin")
+                    ],
+                    correctAnswerID: 1
+                )
+            ]
+        }
+
+        return [question(for: level)]
     }
 
     private static func question(for level: LearningLevel) -> BattleQuestion {

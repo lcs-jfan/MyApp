@@ -105,6 +105,13 @@ struct NormalBattleView: View {
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
                     .background(.orange, in: Capsule())
+            } else if !viewModel.isLastQuestion {
+                Button("Next question", action: viewModel.advanceToNextQuestion)
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 10)
+                    .background(viewModel.level.color, in: Capsule())
             } else if let nextLevel {
                 NavigationLink {
                     NormalBattleView(
