@@ -7,6 +7,7 @@ final class NormalBattleViewModel {
     var questionIndex = 0
     var selectedAnswerID: Int?
     var hasAnswered = false
+    private(set) var answeredQuestionCount = 0
 
     init(level: LearningLevel) {
         self.level = level
@@ -32,6 +33,10 @@ final class NormalBattleViewModel {
         questionIndex == questions.count - 1
     }
 
+    var questionCount: Int {
+        questions.count
+    }
+
     var selectedAnswer: AnswerChoice? {
         guard let selectedAnswerID else {
             return nil
@@ -52,6 +57,9 @@ final class NormalBattleViewModel {
         }
         selectedAnswerID = answer.id
         hasAnswered = true
+        if answeredCorrectly {
+            answeredQuestionCount += 1
+        }
     }
 
     func tryAgain() {
@@ -91,32 +99,32 @@ final class NormalBattleViewModel {
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "Which instrument usually has black and white keys?",
+                    prompt: "Which musical feature tells how high or low a note sounds?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Piano"),
-                        AnswerChoice(id: 2, text: "Drum"),
-                        AnswerChoice(id: 3, text: "Trumpet"),
-                        AnswerChoice(id: 4, text: "Violin")
+                        AnswerChoice(id: 1, text: "Pitch"),
+                        AnswerChoice(id: 2, text: "Tempo"),
+                        AnswerChoice(id: 3, text: "Dynamics"),
+                        AnswerChoice(id: 4, text: "Rhythm")
                     ],
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "Why should you never taste an unknown chemical?",
+                    prompt: "What can change how harmful a substance is?",
                     answers: [
-                        AnswerChoice(id: 1, text: "It could be toxic"),
-                        AnswerChoice(id: 2, text: "It might be too cold"),
-                        AnswerChoice(id: 3, text: "It might be too loud"),
-                        AnswerChoice(id: 4, text: "It could change color")
+                        AnswerChoice(id: 1, text: "The amount that enters the body"),
+                        AnswerChoice(id: 2, text: "The color of its container"),
+                        AnswerChoice(id: 3, text: "Whether it has a strong smell"),
+                        AnswerChoice(id: 4, text: "How expensive it is")
                     ],
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "Which animal breathes air through lungs?",
+                    prompt: "What is the safest response to an unlabeled bottle?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Whale"),
-                        AnswerChoice(id: 2, text: "Seaweed"),
-                        AnswerChoice(id: 3, text: "Clam"),
-                        AnswerChoice(id: 4, text: "Starfish")
+                        AnswerChoice(id: 1, text: "Do not touch it and tell a trusted adult"),
+                        AnswerChoice(id: 2, text: "Smell it from very close"),
+                        AnswerChoice(id: 3, text: "Mix a tiny amount with water"),
+                        AnswerChoice(id: 4, text: "Taste a drop to identify it")
                     ],
                     correctAnswerID: 1
                 ),
@@ -134,9 +142,39 @@ final class NormalBattleViewModel {
                     prompt: "What does tempo tell us about a piece of music?",
                     answers: [
                         AnswerChoice(id: 1, text: "How fast or slow it should be"),
-                        AnswerChoice(id: 2, text: "How high each note sounds"),
-                        AnswerChoice(id: 3, text: "Which instrument is largest"),
-                        AnswerChoice(id: 4, text: "How many people are listening")
+                        AnswerChoice(id: 2, text: "How loud or soft it should be"),
+                        AnswerChoice(id: 3, text: "Which instruments are playing"),
+                        AnswerChoice(id: 4, text: "How many notes are in the song")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Why can warm ocean water be harmful to coral reefs?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Coral can lose the algae that help feed it"),
+                        AnswerChoice(id: 2, text: "Coral instantly turns into a fish"),
+                        AnswerChoice(id: 3, text: "Warm water contains no oxygen at all"),
+                        AnswerChoice(id: 4, text: "Coral can only live in freshwater")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which feature helps a seal stay warm in cold water?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "A thick layer of blubber"),
+                        AnswerChoice(id: 2, text: "Bright scales that reflect sunlight"),
+                        AnswerChoice(id: 3, text: "Long roots under the seafloor"),
+                        AnswerChoice(id: 4, text: "A shell that opens and closes")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What does dynamics describe in music?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Changes in loudness and softness"),
+                        AnswerChoice(id: 2, text: "The speed of the beat"),
+                        AnswerChoice(id: 3, text: "The distance between instruments"),
+                        AnswerChoice(id: 4, text: "The number of verses")
                     ],
                     correctAnswerID: 1
                 )

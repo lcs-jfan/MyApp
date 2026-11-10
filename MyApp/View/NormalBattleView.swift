@@ -22,9 +22,14 @@ struct NormalBattleView: View {
 
             VStack(spacing: 20) {
                 HStack {
-                    Label(viewModel.level.isBoss ? "Final Battle" : "Normal Battle", systemImage: "bolt.fill")
-                        .font(.headline.bold())
-                        .foregroundStyle(viewModel.level.color)
+                    VStack(alignment: .leading, spacing: 3) {
+                        Label(viewModel.level.isBoss ? "Final Battle" : "Normal Battle", systemImage: "bolt.fill")
+                            .font(.headline.bold())
+                            .foregroundStyle(viewModel.level.color)
+                        Text("Answered \(viewModel.answeredQuestionCount) of \(viewModel.questionCount)")
+                            .font(.caption.bold())
+                            .foregroundStyle(.secondary)
+                    }
                     Spacer()
                     Text(viewModel.level.subject)
                         .font(.subheadline.bold())
