@@ -4,6 +4,11 @@ import Observation
 @Observable
 final class GameMapViewModel {
     var selectedRoute: AdventureRoute = .sunny
+    var isRouteConfirmed = false
+
+    func confirmRoute() {
+        isRouteConfirmed = true
+    }
 
     let levelsByRoute: [AdventureRoute: [LearningLevel]] = [
         .sunny: [

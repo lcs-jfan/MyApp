@@ -28,7 +28,7 @@ struct GameMapView: View {
                         }
 
                         ForEach(viewModel.allLevels) { level in
-                            if level.trail == viewModel.selectedRoute {
+                            if level.trail == viewModel.selectedRoute && viewModel.isRouteConfirmed {
                                 NavigationLink(value: level) {
                                     LevelNode(level: level)
                                 }
@@ -38,17 +38,29 @@ struct GameMapView: View {
                                 LevelNode(
                                     level: level,
                                     isLocked: true,
-                                    selectedRoute: viewModel.selectedRoute
+                                    selectedRoute: viewModel.selectedRoute,
+                                    lockMessage: level.trail == viewModel.selectedRoute
+                                        ? "Confirm your trail to unlock this level"
+                                        : "Choose the \(viewModel.selectedRoute.name) to unlock this level"
                                 )
                                 .position(level.position)
                             }
                         }
 
-                        NavigationLink(value: viewModel.boss) {
-                            LevelNode(level: viewModel.boss)
+                        if viewModel.isRouteConfirmed {
+                            NavigationLink(value: viewModel.boss) {
+                                LevelNode(level: viewModel.boss)
+                            }
+                            .buttonStyle(.plain)
+                            .position(viewModel.boss.position)
+                        } else {
+                            LevelNode(
+                                level: viewModel.boss,
+                                isLocked: true,
+                                lockMessage: "Confirm your trail to unlock the boss"
+                            )
+                            .position(viewModel.boss.position)
                         }
-                        .buttonStyle(.plain)
-                        .position(viewModel.boss.position)
                     }
                     .frame(width: 1160, height: 900)
                 }
@@ -91,10 +103,27 @@ struct GameMapView: View {
                                         )
                                 }
                                 .buttonStyle(.plain)
+                                .disabled(viewModel.isRouteConfirmed)
                                 .accessibilityAddTraits(route == viewModel.selectedRoute ? .isSelected : [])
                             }
                         }
                         .padding(.horizontal, 4)
+                    }
+
+                    if viewModel.isRouteConfirmed {
+                        Label("\(viewModel.selectedRoute.name) confirmed", systemImage: "checkmark.seal.fill")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.green)
+                    } else {
+                        Button("Confirm \(viewModel.selectedRoute.name)") {
+                            viewModel.confirmRoute()
+                        }
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 9)
+                        .background(viewModel.selectedRoute.color, in: Capsule())
+                        .accessibilityHint("Locks this trail and unlocks its learning levels")
                     }
                 }
                 .padding(.horizontal)
@@ -177,6 +206,7 @@ private struct LevelNode: View {
     let level: LearningLevel
     var isLocked = false
     var selectedRoute: AdventureRoute?
+    var lockMessage: String?
 
     var body: some View {
         VStack(spacing: 5) {
@@ -207,7 +237,7 @@ private struct LevelNode: View {
         )
         .accessibilityHint(
             isLocked
-                ? "Choose the \(selectedRoute?.name ?? "selected") to unlock this level"
+                ? (lockMessage ?? "Choose the \(selectedRoute?.name ?? "selected") to unlock this level")
                 : "Opens \(level.subject)"
         )
     }
