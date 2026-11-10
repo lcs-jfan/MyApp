@@ -37,7 +37,8 @@ struct GameMapView: View {
                             } else {
                                 LevelNode(
                                     level: level,
-                                    isLocked: true,
+                                    isLocked: level.trail != viewModel.selectedRoute,
+                                    isPreview: level.trail == viewModel.selectedRoute && !viewModel.isRouteConfirmed,
                                     selectedRoute: viewModel.selectedRoute,
                                     lockMessage: level.trail == viewModel.selectedRoute
                                         ? "Confirm your trail to unlock this level"
@@ -47,20 +48,11 @@ struct GameMapView: View {
                             }
                         }
 
-                        if viewModel.isRouteConfirmed {
-                            NavigationLink(value: viewModel.boss) {
-                                LevelNode(level: viewModel.boss)
-                            }
-                            .buttonStyle(.plain)
-                            .position(viewModel.boss.position)
-                        } else {
-                            LevelNode(
-                                level: viewModel.boss,
-                                isLocked: true,
-                                lockMessage: "Confirm your trail to unlock the boss"
-                            )
-                            .position(viewModel.boss.position)
+                        NavigationLink(value: viewModel.boss) {
+                            LevelNode(level: viewModel.boss)
                         }
+                        .buttonStyle(.plain)
+                        .position(viewModel.boss.position)
                     }
                     .frame(width: 1160, height: 900)
                 }
@@ -77,13 +69,15 @@ struct GameMapView: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Button("Wardrobe", systemImage: "tshirt.fill", action: onOpenWardrobe)
-                            .labelStyle(.iconOnly)
-                            .font(.title2)
-                            .foregroundStyle(.indigo)
-                            .padding(12)
-                            .background(.ultraThinMaterial, in: Circle())
-                            .accessibilityLabel("Open wardrobe")
+                        if !viewModel.isRouteConfirmed {
+                            Button("Wardrobe", systemImage: "tshirt.fill", action: onOpenWardrobe)
+                                .labelStyle(.iconOnly)
+                                .font(.title2)
+                                .foregroundStyle(.indigo)
+                                .padding(12)
+                                .background(.ultraThinMaterial, in: Circle())
+                                .accessibilityLabel("Open wardrobe")
+                        }
                     }
 
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -205,6 +199,7 @@ private struct MapDecorations: View {
 private struct LevelNode: View {
     let level: LearningLevel
     var isLocked = false
+    var isPreview = false
     var selectedRoute: AdventureRoute?
     var lockMessage: String?
 
@@ -222,21 +217,32 @@ private struct LevelNode: View {
                         radius: 8,
                         y: 4
                     )
+
+                if isPreview {
+                    Image(systemName: "lock.fill")
+                        .font(.caption2.bold())
+                        .foregroundStyle(.white)
+                        .padding(5)
+                        .background(.black.opacity(0.55), in: Circle())
+                        .offset(x: 25, y: -25)
+                }
             }
             Text(level.isBoss ? "BOSS" : "Level \(level.number)")
                 .font(.caption.bold())
                 .foregroundStyle(isLocked ? .secondary : (level.isBoss ? level.color : .primary))
         }
         .frame(width: 115)
-        .opacity(isLocked ? 0.62 : 1)
+        .opacity(isLocked && !isPreview ? 0.62 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             isLocked
                 ? "\(level.title), locked"
-                : (level.isBoss ? "Final boss, \(level.title)" : "Level \(level.number), \(level.title)")
+                : (isPreview
+                    ? "\(level.title), route preview"
+                    : (level.isBoss ? "Final boss, \(level.title)" : "Level \(level.number), \(level.title)"))
         )
         .accessibilityHint(
-            isLocked
+            isLocked || isPreview
                 ? (lockMessage ?? "Choose the \(selectedRoute?.name ?? "selected") to unlock this level")
                 : "Opens \(level.subject)"
         )
