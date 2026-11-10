@@ -28,11 +28,20 @@ struct GameMapView: View {
                         }
 
                         ForEach(viewModel.allLevels) { level in
-                            NavigationLink(value: level) {
-                                LevelNode(level: level)
+                            if level.trail == viewModel.selectedRoute {
+                                NavigationLink(value: level) {
+                                    LevelNode(level: level)
+                                }
+                                .buttonStyle(.plain)
+                                .position(level.position)
+                            } else {
+                                LevelNode(
+                                    level: level,
+                                    isLocked: true,
+                                    selectedRoute: viewModel.selectedRoute
+                                )
+                                .position(level.position)
                             }
-                            .buttonStyle(.plain)
-                            .position(level.position)
                         }
 
                         NavigationLink(value: viewModel.boss) {
@@ -166,22 +175,40 @@ private struct MapDecorations: View {
 
 private struct LevelNode: View {
     let level: LearningLevel
+    var isLocked = false
+    var selectedRoute: AdventureRoute?
 
     var body: some View {
         VStack(spacing: 5) {
-            Image(systemName: level.icon)
-                .font(.title.bold())
-                .foregroundStyle(.white)
-                .frame(width: 68, height: 68)
-                .background(level.color.gradient, in: Circle())
-                .overlay(Circle().stroke(.white, lineWidth: 5))
-                .shadow(color: level.color.opacity(0.35), radius: 8, y: 4)
+            ZStack {
+                Image(systemName: isLocked ? "lock.fill" : level.icon)
+                    .font(.title.bold())
+                    .foregroundStyle(.white)
+                    .frame(width: 68, height: 68)
+                    .background((isLocked ? .gray : level.color).gradient, in: Circle())
+                    .overlay(Circle().stroke(.white, lineWidth: 5))
+                    .shadow(
+                        color: isLocked ? .clear : level.color.opacity(0.35),
+                        radius: 8,
+                        y: 4
+                    )
+            }
             Text(level.isBoss ? "BOSS" : "Level \(level.number)")
                 .font(.caption.bold())
-                .foregroundStyle(level.isBoss ? level.color : .primary)
+                .foregroundStyle(isLocked ? .secondary : (level.isBoss ? level.color : .primary))
         }
         .frame(width: 115)
-        .accessibilityLabel("Level \(level.number), \(level.title)")
-        .accessibilityHint("Opens \(level.subject)")
+        .opacity(isLocked ? 0.62 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            isLocked
+                ? "\(level.title), locked"
+                : (level.isBoss ? "Final boss, \(level.title)" : "Level \(level.number), \(level.title)")
+        )
+        .accessibilityHint(
+            isLocked
+                ? "Choose the \(selectedRoute?.name ?? "selected") to unlock this level"
+                : "Opens \(level.subject)"
+        )
     }
 }
