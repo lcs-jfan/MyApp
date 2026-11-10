@@ -23,13 +23,17 @@ struct LevelView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                Button(level.isBoss ? "Face the Quiz Dragon" : "Start adventure") {}
-                    .font(.title2.bold())
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
-                    .accessibilityHint("Starts the \(level.title) learning activity")
+                NavigationLink {
+                    NormalBattleView(level: level)
+                } label: {
+                    Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")
+                        .font(.title2.bold())
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                }
+                .accessibilityHint("Starts the \(level.title) learning activity")
 
                 Text(level.isBoss ? "Answer the final challenge to become a Learning Land legend!" : "More puzzles and rewards are coming soon.")
                     .font(.footnote)
