@@ -60,22 +60,22 @@ final class NormalBattleViewModel {
         if level.number == 1 {
             return [
                 BattleQuestion(
-                    prompt: "What does “toxic” mean?",
+                    prompt: "Which statement about a toxic substance is most accurate?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Able to harm the body"),
-                        AnswerChoice(id: 2, text: "Very colorful"),
-                        AnswerChoice(id: 3, text: "Easy to carry"),
-                        AnswerChoice(id: 4, text: "Helpful for every person")
+                        AnswerChoice(id: 1, text: "It can harm the body at some dose"),
+                        AnswerChoice(id: 2, text: "It is always dangerous to touch"),
+                        AnswerChoice(id: 3, text: "It only affects grown-ups"),
+                        AnswerChoice(id: 4, text: "It is safe if it has no smell")
                     ],
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "Which animal is a marine mammal?",
+                    prompt: "Which evidence shows that a whale is a mammal?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Dolphin"),
-                        AnswerChoice(id: 2, text: "Shark"),
-                        AnswerChoice(id: 3, text: "Seaweed"),
-                        AnswerChoice(id: 4, text: "Jellyfish")
+                        AnswerChoice(id: 1, text: "It breathes air and feeds milk to its young"),
+                        AnswerChoice(id: 2, text: "It lives in salt water"),
+                        AnswerChoice(id: 3, text: "It has fins and a tail"),
+                        AnswerChoice(id: 4, text: "It swims faster than many fish")
                     ],
                     correctAnswerID: 1
                 ),
@@ -110,22 +110,22 @@ final class NormalBattleViewModel {
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "What do marine biologists study?",
+                    prompt: "Why are algae important in many ocean food webs?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Life in oceans and seas"),
-                        AnswerChoice(id: 2, text: "Only mountain rocks"),
-                        AnswerChoice(id: 3, text: "Only weather balloons"),
-                        AnswerChoice(id: 4, text: "Only musical instruments")
+                        AnswerChoice(id: 1, text: "They make food using sunlight"),
+                        AnswerChoice(id: 2, text: "They keep every ocean animal warm"),
+                        AnswerChoice(id: 3, text: "They turn salt water into fresh water"),
+                        AnswerChoice(id: 4, text: "They are the largest ocean predators")
                     ],
                     correctAnswerID: 1
                 ),
                 BattleQuestion(
-                    prompt: "Which part of music keeps a steady pattern?",
+                    prompt: "What does tempo tell us about a piece of music?",
                     answers: [
-                        AnswerChoice(id: 1, text: "Rhythm"),
-                        AnswerChoice(id: 2, text: "Paint"),
-                        AnswerChoice(id: 3, text: "Gravity"),
-                        AnswerChoice(id: 4, text: "Temperature")
+                        AnswerChoice(id: 1, text: "How fast or slow it should be"),
+                        AnswerChoice(id: 2, text: "How high each note sounds"),
+                        AnswerChoice(id: 3, text: "Which instrument is largest"),
+                        AnswerChoice(id: 4, text: "How many people are listening")
                     ],
                     correctAnswerID: 1
                 )

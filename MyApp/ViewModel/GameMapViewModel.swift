@@ -5,9 +5,14 @@ import Observation
 final class GameMapViewModel {
     var selectedRoute: AdventureRoute = .sunny
     var isRouteConfirmed = false
+    var completedLevelIDs: Set<String> = []
 
     func confirmRoute() {
         isRouteConfirmed = true
+    }
+
+    func markCompleted(_ level: LearningLevel) {
+        completedLevelIDs.insert(level.id)
     }
 
     let levelsByRoute: [AdventureRoute: [LearningLevel]] = [

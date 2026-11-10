@@ -29,7 +29,8 @@ struct GameMapView: View {
                         }
 
                         ForEach(viewModel.allLevels) { level in
-                            if level.trail == viewModel.selectedRoute && viewModel.isRouteConfirmed {
+                            let isCompleted = viewModel.completedLevelIDs.contains(level.id)
+                            if level.trail == viewModel.selectedRoute && viewModel.isRouteConfirmed && !isCompleted {
                                 NavigationLink(value: level) {
                                     LevelNode(level: level)
                                 }
@@ -38,8 +39,9 @@ struct GameMapView: View {
                             } else {
                                 LevelNode(
                                     level: level,
-                                    isLocked: level.trail != viewModel.selectedRoute,
+                                    isLocked: !isCompleted && level.trail != viewModel.selectedRoute,
                                     isPreview: level.trail == viewModel.selectedRoute && !viewModel.isRouteConfirmed,
+                                    isCompleted: isCompleted,
                                     selectedRoute: viewModel.selectedRoute,
                                     lockMessage: level.trail == viewModel.selectedRoute
                                         ? "Confirm your trail to unlock this level"
@@ -49,11 +51,16 @@ struct GameMapView: View {
                             }
                         }
 
-                        NavigationLink(value: viewModel.boss) {
-                            LevelNode(level: viewModel.boss)
+                        if viewModel.completedLevelIDs.contains(viewModel.boss.id) {
+                            LevelNode(level: viewModel.boss, isCompleted: true)
+                                .position(viewModel.boss.position)
+                        } else {
+                            NavigationLink(value: viewModel.boss) {
+                                LevelNode(level: viewModel.boss)
+                            }
+                            .buttonStyle(.plain)
+                            .position(viewModel.boss.position)
                         }
-                        .buttonStyle(.plain)
-                        .position(viewModel.boss.position)
                     }
                     .frame(width: 1160, height: 900)
                 }
@@ -130,6 +137,7 @@ struct GameMapView: View {
                     level: level,
                     avatar: avatar,
                     onFinish: {
+                        viewModel.markCompleted(level)
                         navigationPath.removeAll()
                     }
                 )
@@ -207,17 +215,18 @@ private struct LevelNode: View {
     let level: LearningLevel
     var isLocked = false
     var isPreview = false
+    var isCompleted = false
     var selectedRoute: AdventureRoute?
     var lockMessage: String?
 
     var body: some View {
         VStack(spacing: 5) {
             ZStack {
-                Image(systemName: isLocked ? "lock.fill" : level.icon)
+                Image(systemName: isCompleted ? "checkmark.circle.fill" : (isLocked ? "lock.fill" : level.icon))
                     .font(.title.bold())
                     .foregroundStyle(.white)
                     .frame(width: 68, height: 68)
-                    .background((isLocked ? .gray : level.color).gradient, in: Circle())
+                    .background((isCompleted ? .green : (isLocked ? .gray : level.color)).gradient, in: Circle())
                     .overlay(Circle().stroke(.white, lineWidth: 5))
                     .shadow(
                         color: isLocked ? .clear : level.color.opacity(0.35),
@@ -234,24 +243,28 @@ private struct LevelNode: View {
                         .offset(x: 25, y: -25)
                 }
             }
-            Text(level.isBoss ? "BOSS" : "Level \(level.number)")
+            Text(isCompleted ? "Passed" : (level.isBoss ? "BOSS" : "Level \(level.number)"))
                 .font(.caption.bold())
-                .foregroundStyle(isLocked ? .secondary : (level.isBoss ? level.color : .primary))
+                .foregroundStyle(isCompleted ? .green : (isLocked ? .secondary : (level.isBoss ? level.color : .primary)))
         }
         .frame(width: 115)
-        .opacity(isLocked && !isPreview ? 0.62 : 1)
+        .opacity(isLocked && !isPreview && !isCompleted ? 0.62 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
-            isLocked
+            isCompleted
+                ? "\(level.title), passed"
+                : (isLocked
                 ? "\(level.title), locked"
                 : (isPreview
                     ? "\(level.title), route preview"
-                    : (level.isBoss ? "Final boss, \(level.title)" : "Level \(level.number), \(level.title)"))
+                    : (level.isBoss ? "Final boss, \(level.title)" : "Level \(level.number), \(level.title)")))
         )
         .accessibilityHint(
-            isLocked || isPreview
+            isCompleted
+                ? "This level has already been passed"
+                : (isLocked || isPreview
                 ? (lockMessage ?? "Choose the \(selectedRoute?.name ?? "selected") to unlock this level")
-                : "Opens \(level.subject)"
+                : "Opens \(level.subject)")
         )
     }
 }
