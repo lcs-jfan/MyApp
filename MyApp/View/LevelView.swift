@@ -3,6 +3,7 @@ import SwiftUI
 struct LevelView: View {
     let level: LearningLevel
     let avatar: PlayerAvatar
+    let nextLevel: LearningLevel?
 
     var body: some View {
         ZStack {
@@ -24,7 +25,11 @@ struct LevelView: View {
                 }
 
                 NavigationLink {
-                    NormalBattleView(level: level)
+                    NormalBattleView(
+                        level: level,
+                        avatar: avatar,
+                        nextLevel: nextLevel
+                    )
                 } label: {
                     Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")
                         .font(.title2.bold())

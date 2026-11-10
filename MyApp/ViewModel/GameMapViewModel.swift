@@ -45,4 +45,18 @@ final class GameMapViewModel {
     var allLevels: [LearningLevel] {
         AdventureRoute.allCases.flatMap { levelsByRoute[$0] ?? [] }
     }
+
+    func nextLevel(after level: LearningLevel) -> LearningLevel? {
+        guard let trail = level.trail,
+              let routeLevels = levelsByRoute[trail],
+              let currentIndex = routeLevels.firstIndex(of: level) else {
+            return nil
+        }
+
+        if currentIndex + 1 < routeLevels.count {
+            return routeLevels[currentIndex + 1]
+        }
+
+        return boss
+    }
 }

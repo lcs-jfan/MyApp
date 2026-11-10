@@ -125,7 +125,11 @@ struct GameMapView: View {
                 .background(.regularMaterial)
             }
             .navigationDestination(for: LearningLevel.self) { level in
-                LevelView(level: level, avatar: avatar)
+                LevelView(
+                    level: level,
+                    avatar: avatar,
+                    nextLevel: viewModel.nextLevel(after: level)
+                )
             }
         }
     }

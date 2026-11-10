@@ -2,9 +2,14 @@ import SwiftUI
 
 struct NormalBattleView: View {
     @State private var viewModel: NormalBattleViewModel
+    @Environment(\.dismiss) private var dismiss
+    let avatar: PlayerAvatar
+    let nextLevel: LearningLevel?
 
-    init(level: LearningLevel) {
+    init(level: LearningLevel, avatar: PlayerAvatar, nextLevel: LearningLevel?) {
         _viewModel = State(initialValue: NormalBattleViewModel(level: level))
+        self.avatar = avatar
+        self.nextLevel = nextLevel
     }
 
     var body: some View {
@@ -35,7 +40,7 @@ struct NormalBattleView: View {
                         .foregroundStyle(viewModel.level.color)
 
                     Text(viewModel.question.prompt)
-                        .font(.system(size: 30, weight: .bold, design: .rounded))
+                        .font(.system(size: 40, weight: .bold, design: .rounded))
                         .multilineTextAlignment(.center)
                         .minimumScaleFactor(0.7)
                         .frame(maxWidth: 620)
@@ -74,7 +79,7 @@ struct NormalBattleView: View {
                         .background(answerBackground(for: answer), in: RoundedRectangle(cornerRadius: 18))
                         .overlay {
                             RoundedRectangle(cornerRadius: 18)
-                                .stroke(answerBorder(for: answer), lineWidth: 3)
+                                .stroke(answerBorder(for: answer), lineWidth: 4)
                         }
                 }
                 .buttonStyle(.plain)
@@ -100,6 +105,30 @@ struct NormalBattleView: View {
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
                     .background(.orange, in: Capsule())
+            } else if let nextLevel {
+                NavigationLink {
+                    NormalBattleView(
+                        level: nextLevel,
+                        avatar: avatar,
+                        nextLevel: GameMapViewModel().nextLevel(after: nextLevel)
+                    )
+                } label: {
+                    Label("Continue to \(nextLevel.title)", systemImage: "arrow.right.circle.fill")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 18)
+                        .padding(.vertical, 10)
+                        .background(viewModel.level.color, in: Capsule())
+                }
+            } else {
+                Button("Finish battle") {
+                    dismiss()
+                }
+                .font(.subheadline.bold())
+                .foregroundStyle(.white)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 10)
+                .background(viewModel.level.color, in: Capsule())
             }
         }
         .accessibilityElement(children: .combine)
@@ -114,7 +143,7 @@ struct NormalBattleView: View {
 
     private func answerBorder(for answer: AnswerChoice) -> Color {
         guard viewModel.hasAnswered, answer.id == viewModel.selectedAnswerID else {
-            return .white.opacity(0.9)
+            return .indigo.opacity(0.45)
         }
         return viewModel.answeredCorrectly ? .green : .orange
     }
