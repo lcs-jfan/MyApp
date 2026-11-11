@@ -19,7 +19,11 @@ struct LevelView: View {
                         .foregroundStyle(level.color)
                     Text(level.title)
                         .font(.largeTitle.bold())
-                    Text("A fun \(level.subject.lowercased()) adventure is ready!")
+                    Text(level.number == 2
+                         ? "Answer marine biology, music, and biomedical toxicity questions to earn a spin!"
+                         : level.number == 3
+                         ? "Choose a topic and complete its learning activity."
+                         : "A fun \(level.subject.lowercased()) adventure is ready!")
                         .font(.title3)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
@@ -50,7 +54,7 @@ struct LevelView: View {
                             onFinish: onFinish
                         )
                     } label: {
-                        Text("Play Prize Wheel")
+                        Text("Start Prize Wheel")
                             .font(.title2.bold())
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -58,6 +62,21 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Answer up to three questions to earn a prize wheel spin")
+                } else if level.number == 3 {
+                    NavigationLink {
+                        TopicSelectionView(
+                            avatar: avatar,
+                            onFinish: onFinish
+                        )
+                    } label: {
+                        Text("Choose a Topic")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Choose a topic for the learning activity")
                 } else {
                     Text("This learning activity is coming soon.")
                         .font(.headline)

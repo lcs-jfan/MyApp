@@ -31,7 +31,7 @@ struct GameMapView: View {
 
                         ForEach(viewModel.allLevels) { level in
                             let isCompleted = viewModel.completedLevelIDs.contains(level.id)
-                            if level.trail == viewModel.selectedRoute && viewModel.isRouteConfirmed && !isCompleted {
+                            if viewModel.isUnlocked(level) && !isCompleted {
                                 NavigationLink(value: level) {
                                     LevelNode(level: level)
                                 }
@@ -40,26 +40,31 @@ struct GameMapView: View {
                             } else {
                                 LevelNode(
                                     level: level,
-                                    isLocked: !isCompleted && level.trail != viewModel.selectedRoute,
-                                    isPreview: level.trail == viewModel.selectedRoute && !viewModel.isRouteConfirmed,
+                                    isLocked: !isCompleted && !viewModel.isUnlocked(level),
+                                    isPreview: false,
                                     isCompleted: isCompleted,
                                     selectedRoute: viewModel.selectedRoute,
-                                    lockMessage: level.trail == viewModel.selectedRoute
-                                        ? "Confirm your trail to unlock this level"
-                                        : "Choose the \(viewModel.selectedRoute.name) to unlock this level"
+                                    lockMessage: viewModel.lockMessage(for: level)
                                 )
                                 .position(level.position)
                             }
                         }
 
-                        if viewModel.completedLevelIDs.contains(viewModel.boss.id) {
-                            LevelNode(level: viewModel.boss, isCompleted: true)
-                                .position(viewModel.boss.position)
-                        } else {
+                        let isBossCompleted = viewModel.completedLevelIDs.contains(viewModel.boss.id)
+                        if viewModel.isUnlocked(viewModel.boss) && !isBossCompleted {
                             NavigationLink(value: viewModel.boss) {
                                 LevelNode(level: viewModel.boss)
                             }
                             .buttonStyle(.plain)
+                            .position(viewModel.boss.position)
+                        } else {
+                            LevelNode(
+                                level: viewModel.boss,
+                                isLocked: !isBossCompleted,
+                                isCompleted: isBossCompleted,
+                                selectedRoute: viewModel.selectedRoute,
+                                lockMessage: viewModel.lockMessage(for: viewModel.boss)
+                            )
                             .position(viewModel.boss.position)
                         }
                     }

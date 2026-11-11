@@ -15,11 +15,51 @@ final class GameMapViewModel {
         completedLevelIDs.insert(level.id)
     }
 
+    func isUnlocked(_ level: LearningLevel) -> Bool {
+        guard isRouteConfirmed else {
+            return false
+        }
+
+        if level.isBoss {
+            guard let routeLevels = levelsByRoute[selectedRoute],
+                  let finalLevel = routeLevels.last else {
+                return false
+            }
+            return completedLevelIDs.contains(finalLevel.id)
+        }
+
+        guard level.trail == selectedRoute,
+              let routeLevels = levelsByRoute[selectedRoute],
+              let levelIndex = routeLevels.firstIndex(of: level) else {
+            return false
+        }
+
+        guard levelIndex > 0 else {
+            return true
+        }
+        return completedLevelIDs.contains(routeLevels[levelIndex - 1].id)
+    }
+
+    func lockMessage(for level: LearningLevel) -> String {
+        guard isRouteConfirmed else {
+            return "Confirm your trail to unlock this level"
+        }
+        if level.isBoss {
+            return "Complete the final level on your trail to unlock the Quiz Dragon"
+        }
+        guard let routeLevels = levelsByRoute[selectedRoute],
+              let levelIndex = routeLevels.firstIndex(of: level),
+              levelIndex > 0 else {
+            return "Choose the \(selectedRoute.name) to unlock this level"
+        }
+        return "Complete Level \(routeLevels[levelIndex - 1].number) first"
+    }
+
     let levelsByRoute: [AdventureRoute: [LearningLevel]] = [
         .sunny: [
             LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 210), isBoss: false, trail: .sunny),
-            LearningLevel(number: 2, title: "Shape Summit", subject: "Geometry", icon: "triangle.fill", color: .yellow, position: CGPoint(x: 370, y: 300), isBoss: false, trail: .sunny),
-            LearningLevel(number: 3, title: "Word Woods", subject: "Reading", icon: "book.fill", color: .green, position: CGPoint(x: 590, y: 180), isBoss: false, trail: .sunny),
+            LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 300), isBoss: false, trail: .sunny),
+            LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 180), isBoss: false, trail: .sunny),
             LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 260), isBoss: false, trail: .sunny)
         ],
         .forest: [

@@ -23,38 +23,11 @@ final class PrizeWheelViewModel {
 
     init(level: LearningLevel) {
         self.level = level
-        self.questions = [
-            BattleQuestion(
-                prompt: "How many sides does a triangle have?",
-                answers: [
-                    AnswerChoice(id: 1, text: "Three"),
-                    AnswerChoice(id: 2, text: "Four"),
-                    AnswerChoice(id: 3, text: "Five"),
-                    AnswerChoice(id: 4, text: "Six")
-                ],
-                correctAnswerID: 1
-            ),
-            BattleQuestion(
-                prompt: "Which shape has four equal sides?",
-                answers: [
-                    AnswerChoice(id: 1, text: "Square"),
-                    AnswerChoice(id: 2, text: "Triangle"),
-                    AnswerChoice(id: 3, text: "Circle"),
-                    AnswerChoice(id: 4, text: "Oval")
-                ],
-                correctAnswerID: 1
-            ),
-            BattleQuestion(
-                prompt: "What is the perimeter of a square with 3 cm sides?",
-                answers: [
-                    AnswerChoice(id: 1, text: "12 cm"),
-                    AnswerChoice(id: 2, text: "9 cm"),
-                    AnswerChoice(id: 3, text: "6 cm"),
-                    AnswerChoice(id: 4, text: "15 cm")
-                ],
-                correctAnswerID: 1
-            )
-        ].map { question in
+        self.questions = Array(
+            NormalBattleViewModel.questionBank(forLevelNumber: 1)
+                .shuffled()
+                .prefix(3)
+        ).map { question in
             BattleQuestion(
                 prompt: question.prompt,
                 answers: question.answers.shuffled(),

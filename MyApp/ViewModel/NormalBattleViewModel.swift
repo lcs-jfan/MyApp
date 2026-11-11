@@ -75,8 +75,12 @@ final class NormalBattleViewModel {
         tryAgain()
     }
 
-    private static func questionBank(for level: LearningLevel) -> [BattleQuestion] {
-        if level.number == 1 {
+    static func questionBank(for level: LearningLevel) -> [BattleQuestion] {
+        questionBank(forLevelNumber: level.number, subject: level.subject)
+    }
+
+    static func questionBank(forLevelNumber levelNumber: Int, subject: String = "") -> [BattleQuestion] {
+        if levelNumber == 1 {
             return [
                 BattleQuestion(
                     prompt: "Which statement about a toxic substance is most accurate?",
@@ -181,11 +185,46 @@ final class NormalBattleViewModel {
             ]
         }
 
-        return [question(for: level)]
+        if levelNumber == 2 {
+            return [
+                BattleQuestion(
+                    prompt: "How many sides does a triangle have?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Three"),
+                        AnswerChoice(id: 2, text: "Four"),
+                        AnswerChoice(id: 3, text: "Five"),
+                        AnswerChoice(id: 4, text: "Six")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which shape has four equal sides?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Square"),
+                        AnswerChoice(id: 2, text: "Triangle"),
+                        AnswerChoice(id: 3, text: "Circle"),
+                        AnswerChoice(id: 4, text: "Oval")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is the perimeter of a square with 3 cm sides?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "12 cm"),
+                        AnswerChoice(id: 2, text: "9 cm"),
+                        AnswerChoice(id: 3, text: "6 cm"),
+                        AnswerChoice(id: 4, text: "15 cm")
+                    ],
+                    correctAnswerID: 1
+                )
+            ]
+        }
+
+        return [question(forSubject: subject)]
     }
 
-    private static func question(for level: LearningLevel) -> BattleQuestion {
-        switch level.subject {
+    private static func question(forSubject subject: String) -> BattleQuestion {
+        switch subject {
         case "Math", "Geometry":
             BattleQuestion(
                 prompt: "What is 7 + 5?",

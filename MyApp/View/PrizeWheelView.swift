@@ -22,7 +22,11 @@ struct PrizeWheelView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [.yellow.opacity(0.25), .pink.opacity(0.15), .blue.opacity(0.2)],
+                colors: [
+                    viewModel.level.color.opacity(0.25),
+                    .white,
+                    viewModel.level.color.opacity(0.12)
+                ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -31,16 +35,16 @@ struct PrizeWheelView: View {
             ScrollView {
                 VStack(spacing: 18) {
                     HStack {
-                        Label("Prize Wheel", systemImage: "circle.dotted.and.circle")
+                        Label("Topic Mix", systemImage: "sparkles")
                             .font(.headline.bold())
-                            .foregroundStyle(.pink)
+                            .foregroundStyle(viewModel.level.color)
                         Spacer()
                         Text("Question \(viewModel.attemptNumber) of \(viewModel.questionCount)")
                             .font(.subheadline.bold())
                             .foregroundStyle(.secondary)
                     }
 
-                    Text("Answer a question correctly to earn a spin!")
+                    Text("Answer a marine biology, music, or biomedical toxicity question to earn a spin!")
                         .font(.title3.bold())
                         .multilineTextAlignment(.center)
 
@@ -76,7 +80,7 @@ struct PrizeWheelView: View {
                         .stroke(.white, lineWidth: 8)
                 }
                 .rotationEffect(.degrees(wheelRotation))
-                .shadow(color: .pink.opacity(0.3), radius: 12, y: 6)
+                .shadow(color: viewModel.level.color.opacity(0.3), radius: 12, y: 6)
 
             ForEach(Array(viewModel.prizes.enumerated()), id: \.element.id) { index, prize in
                 Image(systemName: prize.icon)
@@ -93,7 +97,7 @@ struct PrizeWheelView: View {
                 .overlay {
                     Text(viewModel.hasSpun ? "Won!" : "Spin")
                         .font(.headline.bold())
-                        .foregroundStyle(.pink)
+                        .foregroundStyle(viewModel.level.color)
                 }
 
             Image(systemName: "arrowtriangle.down.fill")
@@ -124,7 +128,7 @@ struct PrizeWheelView: View {
                             .background(.white.opacity(0.85), in: RoundedRectangle(cornerRadius: 14))
                             .overlay {
                                 RoundedRectangle(cornerRadius: 14)
-                                    .stroke(.pink.opacity(0.5), lineWidth: 3)
+                                    .stroke(viewModel.level.color.opacity(0.5), lineWidth: 3)
                             }
                     }
                     .buttonStyle(.plain)
@@ -139,7 +143,7 @@ struct PrizeWheelView: View {
                         .foregroundStyle(.white)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 11)
-                        .background(.pink, in: Capsule())
+                        .background(viewModel.level.color, in: Capsule())
                 } else if viewModel.attemptNumber < viewModel.questionCount {
                     Button("Next question", action: viewModel.nextQuestion)
                         .font(.headline.bold())
