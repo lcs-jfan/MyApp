@@ -88,7 +88,7 @@ struct PrizeWheelView: View {
                     .font(.title2.bold())
                     .foregroundStyle(.white)
                     .offset(y: -88)
-                    .rotationEffect(.degrees(Double(index) * 60))
+                    .rotationEffect(.degrees(Double(index) * 360 / Double(viewModel.prizes.count)))
                     .rotationEffect(.degrees(-wheelRotation))
             }
 

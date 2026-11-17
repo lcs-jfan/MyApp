@@ -106,7 +106,15 @@ private struct WardrobeSection<Content: View>: View {
                 .font(.headline)
                 .foregroundStyle(.indigo)
 
-            HStack(spacing: 10, content: { content })
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 10),
+                    GridItem(.flexible(), spacing: 10),
+                    GridItem(.flexible(), spacing: 10)
+                ],
+                spacing: 10,
+                content: { content }
+            )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

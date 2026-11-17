@@ -30,7 +30,7 @@ final class AppViewModel {
     }
 
     func isUnlocked(_ outfit: Outfit) -> Bool {
-        [.explorer, .artist, .athlete].contains(outfit) || collectedPrizes.contains {
+        outfit == .explorer || collectedPrizes.contains {
             guard case .outfit(let unlockedOutfit) = $0.kind else {
                 return false
             }
@@ -39,7 +39,7 @@ final class AppViewModel {
     }
 
     func isUnlocked(_ hair: HairStyle) -> Bool {
-        [.curly, .bob, .cap].contains(hair) || collectedPrizes.contains {
+        hair == .curly || collectedPrizes.contains {
             guard case .hair(let unlockedHair) = $0.kind else {
                 return false
             }
@@ -48,7 +48,7 @@ final class AppViewModel {
     }
 
     func isUnlocked(_ skinTone: SkinTone) -> Bool {
-        [.sunny, .peach, .moon].contains(skinTone) || collectedPrizes.contains {
+        skinTone == .sunny || collectedPrizes.contains {
             guard case .skinTone(let unlockedSkinTone) = $0.kind else {
                 return false
             }

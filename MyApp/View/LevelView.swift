@@ -43,7 +43,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Match four concepts with their definitions")
-                } else if [1, 5, 8, 9, 12].contains(level.number) {
+                } else if [1, 5, 9].contains(level.number) {
                     NavigationLink {
                         NormalBattleView(
                             level: level,
@@ -91,7 +91,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Choose a topic for the learning activity")
-                } else if level.number == 4 {
+                } else if [4, 8, 12].contains(level.number) {
                     NavigationLink {
                         CampfireView(
                             onPrizeWon: onPrizeWon,

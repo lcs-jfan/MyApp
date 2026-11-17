@@ -4,10 +4,10 @@ struct GameMapView: View {
     @Bindable var viewModel: GameMapViewModel
     @State private var navigationPath: [LearningLevel] = []
     @State private var showsLevelTester = false
+    @State private var completedLevel: LearningLevel?
     let avatar: PlayerAvatar
     let onOpenWardrobe: () -> Void
     let onPrizeWon: (WheelPrize) -> Void
-    let onRoundComplete: () -> Void
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -94,15 +94,6 @@ struct GameMapView: View {
                         .padding(12)
                         .background(.ultraThinMaterial, in: Circle())
                         .accessibilityLabel("Test levels directly")
-                        if !viewModel.isRouteConfirmed {
-                            Button("Wardrobe", systemImage: "tshirt.fill", action: onOpenWardrobe)
-                                .labelStyle(.iconOnly)
-                                .font(.title2)
-                                .foregroundStyle(.indigo)
-                                .padding(12)
-                                .background(.ultraThinMaterial, in: Circle())
-                                .accessibilityLabel("Open wardrobe")
-                        }
                     }
 
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -156,7 +147,7 @@ struct GameMapView: View {
                     onFinish: {
                         viewModel.markCompleted(level)
                         navigationPath.removeAll()
-                        onRoundComplete()
+                        completedLevel = level
                     },
                     onPrizeWon: onPrizeWon
                 )
@@ -170,9 +161,18 @@ struct GameMapView: View {
                 onRoundComplete: { level in
                     viewModel.markCompleted(level)
                     showsLevelTester = false
-                    onRoundComplete()
-                }
+                    completedLevel = level
+                },
+                onOpenWardrobe: onOpenWardrobe
             )
+        }
+        .overlay {
+            if let completedLevel {
+                CompletionOverlayView(level: completedLevel) {
+                    self.completedLevel = nil
+                    onOpenWardrobe()
+                }
+            }
         }
     }
 }

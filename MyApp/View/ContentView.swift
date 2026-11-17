@@ -18,8 +18,7 @@ struct ContentView: View {
                     viewModel: mapViewModel,
                     avatar: viewModel.avatar,
                     onOpenWardrobe: viewModel.openWardrobe,
-                    onPrizeWon: viewModel.collect,
-                    onRoundComplete: viewModel.openWardrobe
+                    onPrizeWon: viewModel.collect
                 )
             } else {
                 WardrobeView(viewModel: viewModel, onReady: viewModel.enterMap)
