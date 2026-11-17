@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NormalBattleView: View {
     @State private var viewModel: NormalBattleViewModel
+    @Environment(GameState.self) private var gameState
     let avatar: PlayerAvatar
     let onFinish: () -> Void
 
@@ -72,6 +73,9 @@ struct NormalBattleView: View {
             ForEach(viewModel.question.answers) { answer in
                 Button {
                     viewModel.choose(answer)
+                    if !viewModel.answeredCorrectly {
+                        gameState.loseHP()
+                    }
                 } label: {
                     Text(answer.text)
                         .font(.title3.bold())

@@ -19,7 +19,9 @@ struct LevelView: View {
                         .foregroundStyle(level.color)
                     Text(level.title)
                         .font(.largeTitle.bold())
-                    Text(level.number == 2
+                    Text(level.isBoss
+                         ? "Match concepts and definitions from biomedical toxicity, music, and marine biology."
+                         : level.number == 2
                          ? "Answer marine biology, music, and biomedical toxicity questions to earn a spin!"
                          : level.number == 3
                          ? "Choose a topic and complete its learning activity."
@@ -29,7 +31,19 @@ struct LevelView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                if level.number == 1 || level.isBoss {
+                if level.isBoss {
+                    NavigationLink {
+                        BossMatchingView(onFinish: onFinish)
+                    } label: {
+                        Text("Start Final Match")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Match four concepts with their definitions")
+                } else if [1, 5, 8, 9, 12].contains(level.number) {
                     NavigationLink {
                         NormalBattleView(
                             level: level,
@@ -37,7 +51,7 @@ struct LevelView: View {
                             onFinish: onFinish
                         )
                     } label: {
-                        Text(level.isBoss ? "Face the Quiz Dragon" : "Start Normal Battle")
+                        Text("Start Normal Battle")
                             .font(.title2.bold())
                             .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
@@ -45,7 +59,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Starts the \(level.title) learning activity")
-                } else if level.number == 2 {
+                } else if [2, 6, 10].contains(level.number) {
                     NavigationLink {
                         PrizeWheelView(
                             level: level,
@@ -62,7 +76,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Answer up to three questions to earn a prize wheel spin")
-                } else if level.number == 3 {
+                } else if [3, 7, 11].contains(level.number) {
                     NavigationLink {
                         TopicSelectionView(
                             avatar: avatar,
@@ -77,13 +91,37 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Choose a topic for the learning activity")
+                } else if level.number == 4 {
+                    NavigationLink {
+                        CampfireView(
+                            onPrizeWon: onPrizeWon,
+                            onFinish: onFinish
+                        )
+                    } label: {
+                        Text("Visit the Campfire")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Choose between resting and finding a random item")
                 } else {
-                    Text("This learning activity is coming soon.")
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.secondary.opacity(0.12), in: RoundedRectangle(cornerRadius: 18))
+                    NavigationLink {
+                        NormalBattleView(
+                            level: level,
+                            avatar: avatar,
+                            onFinish: onFinish
+                        )
+                    } label: {
+                        Text("Start Normal Battle")
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
+                    }
+                    .accessibilityHint("Starts the \(level.title) learning activity")
                 }
 
                 Text(level.isBoss ? "Answer the final challenge to become a Learning Land legend!" : "More puzzles and rewards are coming soon.")

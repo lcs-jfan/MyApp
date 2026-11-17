@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct GameMapView: View {
-    @State private var viewModel = GameMapViewModel()
+    @Bindable var viewModel: GameMapViewModel
     @State private var navigationPath: [LearningLevel] = []
+    @State private var showsLevelTester = false
     let avatar: PlayerAvatar
     let onOpenWardrobe: () -> Void
     let onPrizeWon: (WheelPrize) -> Void
+    let onRoundComplete: () -> Void
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -83,6 +85,15 @@ struct GameMapView: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
+                        Button("Test levels", systemImage: "hammer.fill") {
+                            showsLevelTester = true
+                        }
+                        .labelStyle(.iconOnly)
+                        .font(.title2)
+                        .foregroundStyle(.orange)
+                        .padding(12)
+                        .background(.ultraThinMaterial, in: Circle())
+                        .accessibilityLabel("Test levels directly")
                         if !viewModel.isRouteConfirmed {
                             Button("Wardrobe", systemImage: "tshirt.fill", action: onOpenWardrobe)
                                 .labelStyle(.iconOnly)
@@ -145,10 +156,23 @@ struct GameMapView: View {
                     onFinish: {
                         viewModel.markCompleted(level)
                         navigationPath.removeAll()
+                        onRoundComplete()
                     },
                     onPrizeWon: onPrizeWon
                 )
             }
+        }
+        .sheet(isPresented: $showsLevelTester) {
+            LevelTesterView(
+                levels: viewModel.allLevels + [viewModel.boss],
+                avatar: avatar,
+                onPrizeWon: onPrizeWon,
+                onRoundComplete: { level in
+                    viewModel.markCompleted(level)
+                    showsLevelTester = false
+                    onRoundComplete()
+                }
+            )
         }
     }
 }

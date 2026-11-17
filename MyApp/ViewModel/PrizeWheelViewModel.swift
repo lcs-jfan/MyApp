@@ -5,14 +5,7 @@ import SwiftUI
 final class PrizeWheelViewModel {
     let level: LearningLevel
     let questions: [BattleQuestion]
-    let prizes: [WheelPrize] = [
-        WheelPrize(title: "Science Coat", icon: "cross.case.fill", color: .blue, kind: .outfit(.scientist)),
-        WheelPrize(title: "Spiky Hair", icon: "sparkles", color: .orange, kind: .hair(.spikes)),
-        WheelPrize(title: "Cocoa Skin Tone", icon: "circle.fill", color: .brown, kind: .skinTone(.cocoa)),
-        WheelPrize(title: "Artist Outfit", icon: "paintpalette.fill", color: .pink, kind: .outfit(.artist)),
-        WheelPrize(title: "Explorer Outfit", icon: "binoculars.fill", color: .green, kind: .outfit(.explorer)),
-        WheelPrize(title: "Curly Hair", icon: "person.crop.circle.fill", color: .purple, kind: .hair(.curly))
-    ]
+    let prizes = WheelPrize.available
 
     var questionIndex = 0
     var selectedAnswerID: Int?

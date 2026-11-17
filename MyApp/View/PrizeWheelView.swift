@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PrizeWheelView: View {
     @State private var viewModel: PrizeWheelViewModel
+    @Environment(GameState.self) private var gameState
     let avatar: PlayerAvatar
     let onPrizeWon: (WheelPrize) -> Void
     let onFinish: () -> Void
@@ -119,6 +120,9 @@ struct PrizeWheelView: View {
                 ForEach(viewModel.question.answers) { answer in
                     Button {
                         viewModel.choose(answer)
+                        if !viewModel.answeredCorrectly {
+                            gameState.loseHP()
+                        }
                     } label: {
                         Text(answer.text)
                             .font(.headline)

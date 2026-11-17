@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AnatomyActivityView: View {
+    @Environment(GameState.self) private var gameState
     let onFinish: () -> Void
     @State private var partIndex = 0
     @State private var completedPartIDs: Set<String> = []
@@ -277,6 +278,7 @@ struct AnatomyActivityView: View {
             completedPartIDs.insert(part.id)
             feedback = "Correct! You found the \(part.name)."
         } else {
+            gameState.loseHP()
             feedback = "Not quite. Look for the \(currentPart.name)."
         }
     }

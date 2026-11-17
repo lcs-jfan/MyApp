@@ -27,11 +27,12 @@ struct WardrobeView: View {
                     AvatarView(avatar: viewModel.avatar, size: 190)
 
                     WardrobeSection(title: "Skin tone") {
-                        ForEach(SkinTone.allCases) { tone in
+                        ForEach(orderedSkinTones) { tone in
                             ChoiceButton(
                                 title: tone.rawValue,
                                 color: tone.color,
-                                isSelected: viewModel.avatar.skinTone == tone
+                                isSelected: viewModel.avatar.skinTone == tone,
+                                isUnlocked: viewModel.isUnlocked(tone)
                             ) {
                                 viewModel.avatar.skinTone = tone
                             }
@@ -39,12 +40,13 @@ struct WardrobeView: View {
                     }
 
                     WardrobeSection(title: "Hair") {
-                        ForEach(HairStyle.allCases) { style in
+                        ForEach(orderedHairStyles) { style in
                             ChoiceButton(
                                 title: style.rawValue,
                                 systemImage: style.symbol,
                                 color: style.color,
-                                isSelected: viewModel.avatar.hair == style
+                                isSelected: viewModel.avatar.hair == style,
+                                isUnlocked: viewModel.isUnlocked(style)
                             ) {
                                 viewModel.avatar.hair = style
                             }
@@ -52,16 +54,18 @@ struct WardrobeView: View {
                     }
 
                     WardrobeSection(title: "Outfit") {
-                        ForEach(Outfit.allCases) { outfit in
+                        ForEach(orderedOutfits) { outfit in
                             ChoiceButton(
                                 title: outfit.rawValue,
                                 systemImage: outfit.symbol,
                                 color: outfit.color,
-                                isSelected: viewModel.avatar.outfit == outfit
+                                isSelected: viewModel.avatar.outfit == outfit,
+                                isUnlocked: viewModel.isUnlocked(outfit)
                             ) {
                                 viewModel.avatar.outfit = outfit
                             }
                         }
+
                     }
 
                     Button("Ready to explore!", action: onReady)
@@ -77,6 +81,18 @@ struct WardrobeView: View {
                 .frame(maxWidth: .infinity)
             }
         }
+    }
+
+    private var orderedSkinTones: [SkinTone] {
+        SkinTone.allCases.filter(viewModel.isUnlocked) + SkinTone.allCases.filter { !viewModel.isUnlocked($0) }
+    }
+
+    private var orderedHairStyles: [HairStyle] {
+        HairStyle.allCases.filter(viewModel.isUnlocked) + HairStyle.allCases.filter { !viewModel.isUnlocked($0) }
+    }
+
+    private var orderedOutfits: [Outfit] {
+        Outfit.allCases.filter(viewModel.isUnlocked) + Outfit.allCases.filter { !viewModel.isUnlocked($0) }
     }
 }
 
@@ -101,19 +117,25 @@ private struct ChoiceButton: View {
     var systemImage: String?
     let color: Color
     let isSelected: Bool
+    let isUnlocked: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             VStack(spacing: 7) {
-                if let systemImage {
+                if isUnlocked, let systemImage {
                     Image(systemName: systemImage)
                         .font(.title2)
                         .foregroundStyle(color)
-                } else {
+                } else if isUnlocked {
                     Circle()
                         .fill(color)
                         .frame(width: 28, height: 28)
+                } else {
+                    Image(systemName: "lock.fill")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+                        .frame(height: 28)
                 }
 
                 Text(title)
@@ -130,6 +152,9 @@ private struct ChoiceButton: View {
             }
         }
         .buttonStyle(.plain)
+        .disabled(!isUnlocked)
+        .opacity(isUnlocked ? 1 : 0.55)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityHint(isUnlocked ? "Wear this item" : "Unlock this item by earning it")
     }
 }
