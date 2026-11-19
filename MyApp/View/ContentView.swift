@@ -17,7 +17,13 @@ struct ContentView: View {
                 GameMapView(
                     viewModel: mapViewModel,
                     avatar: viewModel.avatar,
+                    backpackItems: viewModel.collectedPrizes,
+                    roundNumber: viewModel.roundNumber,
                     onOpenWardrobe: viewModel.openWardrobe,
+                    onStartNewRound: {
+                        mapViewModel = GameMapViewModel()
+                        viewModel.startNewRound()
+                    },
                     onPrizeWon: viewModel.collect
                 )
             } else {

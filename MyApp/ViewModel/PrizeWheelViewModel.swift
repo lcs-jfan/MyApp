@@ -16,17 +16,7 @@ final class PrizeWheelViewModel {
 
     init(level: LearningLevel) {
         self.level = level
-        self.questions = Array(
-            NormalBattleViewModel.questionBank(forLevelNumber: 1)
-                .shuffled()
-                .prefix(3)
-        ).map { question in
-            BattleQuestion(
-                prompt: question.prompt,
-                answers: question.answers.shuffled(),
-                correctAnswerID: question.correctAnswerID
-            )
-        }
+        self.questions = Array(NormalBattleViewModel.freshQuestionBatch(forLevelNumber: 1, subject: "Topic Mix", count: 3))
     }
 
     var question: BattleQuestion {

@@ -26,7 +26,7 @@ struct BackpackView: View {
     }
 }
 
-private struct BackpackContentsView: View {
+struct BackpackContentsView: View {
     @Environment(\.dismiss) private var dismiss
     let items: [WheelPrize]
 

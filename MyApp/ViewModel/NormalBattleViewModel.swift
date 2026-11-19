@@ -1,3 +1,4 @@
+import Foundation
 import Observation
 
 @Observable
@@ -11,18 +12,7 @@ final class NormalBattleViewModel {
 
     init(level: LearningLevel) {
         self.level = level
-        self.questions = Array(
-            Self.questionBank(for: level)
-                .shuffled()
-                .prefix(5)
-                .map { question in
-                    BattleQuestion(
-                        prompt: question.prompt,
-                        answers: question.answers.shuffled(),
-                        correctAnswerID: question.correctAnswerID
-                    )
-                }
-        )
+        self.questions = Array(Self.freshQuestionBatch(for: level, count: 5))
     }
 
     var question: BattleQuestion {
@@ -179,6 +169,186 @@ final class NormalBattleViewModel {
                         AnswerChoice(id: 2, text: "The speed of the beat"),
                         AnswerChoice(id: 3, text: "The distance between instruments"),
                         AnswerChoice(id: 4, text: "The number of verses")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is the safest way to handle an unknown powder?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Do not touch it and alert a trusted adult"),
+                        AnswerChoice(id: 2, text: "Taste a small amount"),
+                        AnswerChoice(id: 3, text: "Pour it into a drink"),
+                        AnswerChoice(id: 4, text: "Rub it on your skin")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What does dose mean in toxicology?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "The amount of a substance exposed to the body"),
+                        AnswerChoice(id: 2, text: "The color of a substance"),
+                        AnswerChoice(id: 3, text: "The shape of a container"),
+                        AnswerChoice(id: 4, text: "The temperature outside")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Why should chemicals stay in their labeled containers?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Labels help people know the hazards and safe use"),
+                        AnswerChoice(id: 2, text: "Labels make the chemical taste better"),
+                        AnswerChoice(id: 3, text: "Labels stop the container from melting"),
+                        AnswerChoice(id: 4, text: "Labels remove the chemical")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is the correct first action after breathing harmful fumes?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Move to fresh air and get adult help"),
+                        AnswerChoice(id: 2, text: "Breathe more deeply"),
+                        AnswerChoice(id: 3, text: "Continue working"),
+                        AnswerChoice(id: 4, text: "Hide the fumes")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which item gives the clearest warning about a chemical?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Its hazard label"),
+                        AnswerChoice(id: 2, text: "Its smell"),
+                        AnswerChoice(id: 3, text: "Its price"),
+                        AnswerChoice(id: 4, text: "Its container size")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Why should chemical splash goggles be worn?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "They protect the eyes"),
+                        AnswerChoice(id: 2, text: "They make liquids disappear"),
+                        AnswerChoice(id: 3, text: "They remove bad odors"),
+                        AnswerChoice(id: 4, text: "They keep glasses warm")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What role does a whale's tail fluke play?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "It helps propel the whale through water"),
+                        AnswerChoice(id: 2, text: "It filters sunlight"),
+                        AnswerChoice(id: 3, text: "It makes the whale breathe underwater"),
+                        AnswerChoice(id: 4, text: "It digests fish")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is a whale's blowhole used for?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Breathing at the water surface"),
+                        AnswerChoice(id: 2, text: "Filtering sand"),
+                        AnswerChoice(id: 3, text: "Seeing underwater"),
+                        AnswerChoice(id: 4, text: "Holding eggs")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "How does a whale breathe?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "It comes to the surface and uses lungs"),
+                        AnswerChoice(id: 2, text: "It extracts air with gills"),
+                        AnswerChoice(id: 3, text: "It absorbs air through its fins"),
+                        AnswerChoice(id: 4, text: "It never needs oxygen")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What do whales use echolocation to help with?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Finding objects and prey"),
+                        AnswerChoice(id: 2, text: "Growing a shell"),
+                        AnswerChoice(id: 3, text: "Making fresh water"),
+                        AnswerChoice(id: 4, text: "Changing colors")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What keeps many marine mammals warm?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Blubber"),
+                        AnswerChoice(id: 2, text: "Leaf scales"),
+                        AnswerChoice(id: 3, text: "Dry sand"),
+                        AnswerChoice(id: 4, text: "Seaweed shells")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which organism begins many marine food chains?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Photosynthetic plankton"),
+                        AnswerChoice(id: 2, text: "A blue whale"),
+                        AnswerChoice(id: 3, text: "A shark"),
+                        AnswerChoice(id: 4, text: "An octopus")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is rhythm in music?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "A pattern of long and short sounds"),
+                        AnswerChoice(id: 2, text: "The brightness of a tone"),
+                        AnswerChoice(id: 3, text: "The number of instruments"),
+                        AnswerChoice(id: 4, text: "The size of the stage")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What does a musical clef help show?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "The pitch range of notes on a staff"),
+                        AnswerChoice(id: 2, text: "The speed of a performance"),
+                        AnswerChoice(id: 3, text: "The name of the audience"),
+                        AnswerChoice(id: 4, text: "How much a song costs")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What happens when a musical beat is played faster?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "The tempo increases"),
+                        AnswerChoice(id: 2, text: "The pitch always drops"),
+                        AnswerChoice(id: 3, text: "The melody disappears"),
+                        AnswerChoice(id: 4, text: "The dynamics become silence")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which symbol commonly indicates silence in music?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "A rest"),
+                        AnswerChoice(id: 2, text: "A treble clef"),
+                        AnswerChoice(id: 3, text: "A time signature"),
+                        AnswerChoice(id: 4, text: "A measure line")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "What is a melody?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "A sequence of notes that is heard as a tune"),
+                        AnswerChoice(id: 2, text: "Only the rhythm of a drum"),
+                        AnswerChoice(id: 3, text: "A silent pause"),
+                        AnswerChoice(id: 4, text: "A written list of instruments")
+                    ],
+                    correctAnswerID: 1
+                ),
+                BattleQuestion(
+                    prompt: "Which term describes several notes played together?",
+                    answers: [
+                        AnswerChoice(id: 1, text: "Chord"),
+                        AnswerChoice(id: 2, text: "Rest"),
+                        AnswerChoice(id: 3, text: "Tempo"),
+                        AnswerChoice(id: 4, text: "Coda")
                     ],
                     correctAnswerID: 1
                 )
@@ -647,6 +817,40 @@ final class NormalBattleViewModel {
             ]
         default:
             return [question(forSubject: subject)]
+        }
+    }
+
+    static func freshQuestionBatch(for level: LearningLevel, count: Int) -> [BattleQuestion] {
+        freshQuestionBatch(forLevelNumber: level.number, subject: level.subject, count: count)
+    }
+
+    static func freshQuestionBatch(forLevelNumber levelNumber: Int, subject: String = "", count: Int) -> [BattleQuestion] {
+        let storageKey = "shownQuestionPrompts"
+        let defaults = UserDefaults.standard
+        let shown = Set(defaults.stringArray(forKey: storageKey) ?? [])
+        let bank = questionBank(forLevelNumber: levelNumber, subject: subject)
+
+        var available = bank.filter { !shown.contains($0.prompt) }.shuffled()
+        if available.count < count {
+            available = bank.shuffled()
+        }
+
+        let selected = Array(available.prefix(count))
+        var updatedShown = Array(defaults.stringArray(forKey: storageKey) ?? [])
+        for question in selected where !updatedShown.contains(question.prompt) {
+            updatedShown.append(question.prompt)
+        }
+        if updatedShown.count > 100 {
+            updatedShown.removeFirst(updatedShown.count - 100)
+        }
+        defaults.set(updatedShown, forKey: storageKey)
+
+        return selected.map { question in
+            BattleQuestion(
+                prompt: question.prompt,
+                answers: question.answers.shuffled(),
+                correctAnswerID: question.correctAnswerID
+            )
         }
     }
 

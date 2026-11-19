@@ -97,10 +97,10 @@ struct BossMatchingView: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity, minHeight: 72)
                         .padding(.horizontal, 8)
-                        .background(choiceBackground(for: choice.0), in: RoundedRectangle(cornerRadius: 14))
+                    .background(choiceBackground(for: choice.0, inColumn: title), in: RoundedRectangle(cornerRadius: 14))
                         .overlay {
                             RoundedRectangle(cornerRadius: 14)
-                                .stroke(choiceBorder(for: choice.0), lineWidth: 3)
+                            .stroke(choiceBorder(for: choice.0, inColumn: title), lineWidth: 3)
                         }
                 }
                 .buttonStyle(.plain)
@@ -131,21 +131,21 @@ struct BossMatchingView: View {
         }
     }
 
-    private func choiceBackground(for choiceID: String) -> Color {
+    private func choiceBackground(for choiceID: String, inColumn title: String) -> Color {
         if matchedIDs.contains(choiceID) {
             return .green.opacity(0.2)
         }
-        if selectedTermID == choiceID {
-            return .yellow.opacity(0.3)
+        if title == "Concepts", selectedTermID == choiceID {
+            return .yellow.opacity(0.75)
         }
         return .white.opacity(0.82)
     }
 
-    private func choiceBorder(for choiceID: String) -> Color {
+    private func choiceBorder(for choiceID: String, inColumn title: String) -> Color {
         if matchedIDs.contains(choiceID) {
             return .green
         }
-        if selectedTermID == choiceID {
+        if title == "Concepts", selectedTermID == choiceID {
             return .orange
         }
         return .red.opacity(0.35)

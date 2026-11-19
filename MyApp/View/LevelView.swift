@@ -6,6 +6,61 @@ struct LevelView: View {
     let onFinish: () -> Void
     let onPrizeWon: (WheelPrize) -> Void
 
+    private var levelCover: some View {
+        VStack(spacing: 12) {
+            Text(level.isBoss ? "FINAL BOSS" : "Level \(level.number)")
+                .font(.headline.bold())
+                .foregroundStyle(level.color)
+            Text(level.title)
+                .font(.largeTitle.bold())
+
+            if level.isBoss {
+                Label("Match concepts with their definitions across all three topic areas.", systemImage: "flame.fill")
+                    .font(.title3.bold())
+                    .foregroundStyle(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.red.gradient, in: RoundedRectangle(cornerRadius: 18))
+            } else if level.number == 2 {
+                VStack(spacing: 10) {
+                    Label("Answer 3 learning questions", systemImage: "questionmark.circle.fill")
+                        .font(.title3.bold())
+                    Text("Each correct answer earns a spin. Win a new backpack item!")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(16)
+                .frame(maxWidth: .infinity)
+                .background(.pink.opacity(0.12), in: RoundedRectangle(cornerRadius: 18))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 18)
+                        .stroke(level.color.opacity(0.55), lineWidth: 2)
+                }
+            } else if level.number == 3 {
+                Label("Choose one topic and complete its diagram or learning activity.", systemImage: "square.grid.2x2.fill")
+                    .font(.title3.bold())
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.blue.opacity(0.10), in: RoundedRectangle(cornerRadius: 18))
+            } else if level.number == 4 {
+                Label("Rest, recover HP, or find a backpack item.", systemImage: "campfire.fill")
+                    .font(.title3.bold())
+                    .foregroundStyle(.brown)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 18))
+            } else {
+                Label("Complete the normal battle by answering all learning questions.", systemImage: "bolt.fill")
+                    .font(.title3.bold())
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(level.color.opacity(0.10), in: RoundedRectangle(cornerRadius: 18))
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
             level.color.opacity(0.12).ignoresSafeArea()
@@ -13,23 +68,7 @@ struct LevelView: View {
             VStack(spacing: 24) {
                 AvatarView(avatar: avatar, size: 130)
 
-                VStack(spacing: 8) {
-                    Text(level.isBoss ? "FINAL BOSS" : "Level \(level.number)")
-                        .font(.headline)
-                        .foregroundStyle(level.color)
-                    Text(level.title)
-                        .font(.largeTitle.bold())
-                    Text(level.isBoss
-                         ? "Match concepts and definitions from biomedical toxicity, music, and marine biology."
-                         : level.number == 2
-                         ? "Answer marine biology, music, and biomedical toxicity questions to earn a spin!"
-                         : level.number == 3
-                         ? "Choose a topic and complete its learning activity."
-                         : "A fun \(level.subject.lowercased()) adventure is ready!")
-                        .font(.title3)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.secondary)
-                }
+                levelCover
 
                 if level.isBoss {
                     NavigationLink {
@@ -43,7 +82,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Match four concepts with their definitions")
-                } else if [1, 5, 9].contains(level.number) {
+                } else if level.number == 1 {
                     NavigationLink {
                         NormalBattleView(
                             level: level,
@@ -59,7 +98,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Starts the \(level.title) learning activity")
-                } else if [2, 6, 10].contains(level.number) {
+                } else if level.number == 2 {
                     NavigationLink {
                         PrizeWheelView(
                             level: level,
@@ -76,7 +115,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Answer up to three questions to earn a prize wheel spin")
-                } else if [3, 7, 11].contains(level.number) {
+                } else if level.number == 3 {
                     NavigationLink {
                         TopicSelectionView(
                             avatar: avatar,
@@ -91,7 +130,7 @@ struct LevelView: View {
                             .background(level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
                     }
                     .accessibilityHint("Choose a topic for the learning activity")
-                } else if [4, 8, 12].contains(level.number) {
+                } else if level.number == 4 {
                     NavigationLink {
                         CampfireView(
                             onPrizeWon: onPrizeWon,

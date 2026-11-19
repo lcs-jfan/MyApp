@@ -5,8 +5,14 @@ struct GameMapView: View {
     @State private var navigationPath: [LearningLevel] = []
     @State private var showsLevelTester = false
     @State private var completedLevel: LearningLevel?
+    @State private var showsBackpack = false
+    @State private var completedWithNewItem = false
+    @State private var showsRouteSelection = false
     let avatar: PlayerAvatar
+    let backpackItems: [WheelPrize]
+    let roundNumber: Int
     let onOpenWardrobe: () -> Void
+    let onStartNewRound: () -> Void
     let onPrizeWon: (WheelPrize) -> Void
 
     var body: some View {
@@ -38,6 +44,9 @@ struct GameMapView: View {
                                     LevelNode(level: level)
                                 }
                                 .buttonStyle(.plain)
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    completedWithNewItem = false
+                                })
                                 .position(level.position)
                             } else {
                                 LevelNode(
@@ -58,6 +67,9 @@ struct GameMapView: View {
                                 LevelNode(level: viewModel.boss)
                             }
                             .buttonStyle(.plain)
+                            .simultaneousGesture(TapGesture().onEnded {
+                                completedWithNewItem = false
+                            })
                             .position(viewModel.boss.position)
                         } else {
                             LevelNode(
@@ -80,7 +92,7 @@ struct GameMapView: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Learning Land")
                                 .font(.title2.bold())
-                            Text("Drag the map and pick a path!")
+                            Text("Round \(roundNumber) • Drag the map and pick a path!")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -149,7 +161,11 @@ struct GameMapView: View {
                         navigationPath.removeAll()
                         completedLevel = level
                     },
-                    onPrizeWon: onPrizeWon
+                    onPrizeWon: { prize in
+                        let isNewItem = !backpackItems.contains(where: { $0.title == prize.title })
+                        onPrizeWon(prize)
+                        completedWithNewItem = isNewItem
+                    }
                 )
             }
         }
@@ -157,22 +173,117 @@ struct GameMapView: View {
             LevelTesterView(
                 levels: viewModel.allLevels + [viewModel.boss],
                 avatar: avatar,
+                backpackItems: backpackItems,
                 onPrizeWon: onPrizeWon,
                 onRoundComplete: { level in
                     viewModel.markCompleted(level)
                     showsLevelTester = false
                     completedLevel = level
                 },
-                onOpenWardrobe: onOpenWardrobe
+                onOpenWardrobe: onStartNewRound
             )
         }
         .overlay {
             if let completedLevel {
-                CompletionOverlayView(level: completedLevel) {
-                    self.completedLevel = nil
-                    onOpenWardrobe()
+                CompletionOverlayView(
+                    level: completedLevel,
+                    hasNewItem: completedWithNewItem,
+                    onReturnToWardrobe: {
+                        self.completedLevel = nil
+                        onStartNewRound()
+                    },
+                    onCheckBackpack: {
+                        self.completedLevel = nil
+                        completedWithNewItem = false
+                        showsBackpack = true
+                    },
+                    onContinue: {
+                        self.completedLevel = nil
+                        completedWithNewItem = false
+                    }
+                )
+            }
+        }
+        .sheet(isPresented: $showsBackpack) {
+            BackpackContentsView(items: backpackItems)
+                .presentationDetents([.medium, .large])
+        }
+        .overlay {
+            if showsRouteSelection {
+                routeSelectionOverlay
+            }
+        }
+        .onAppear {
+            if !viewModel.isRouteConfirmed {
+                showsRouteSelection = true
+            }
+        }
+    }
+
+    private var routeSelectionOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.58)
+                .ignoresSafeArea()
+
+            VStack(spacing: 18) {
+                Text("Choose Your Route")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.primary)
+
+                Text("Select one trail for this round.")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+
+                VStack(spacing: 12) {
+                    ForEach(AdventureRoute.allCases) { route in
+                        Button {
+                            viewModel.selectedRoute = route
+                            viewModel.confirmRoute()
+                            showsRouteSelection = false
+                        } label: {
+                            HStack(spacing: 14) {
+                                Image(systemName: route.icon)
+                                    .font(.title2.bold())
+                                    .frame(width: 48, height: 48)
+                                    .foregroundStyle(.white)
+                                    .background(route.color.gradient, in: Circle())
+
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(route.name)
+                                        .font(.title3.bold())
+                                        .foregroundStyle(.primary)
+                                    Text(routeDescription(for: route))
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(route.color)
+                            }
+                            .padding()
+                            .background(.white.opacity(0.92), in: RoundedRectangle(cornerRadius: 18))
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
+            .padding(22)
+            .frame(maxWidth: 520)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 28))
+            .shadow(radius: 28)
+            .padding(20)
+        }
+    }
+
+    private func routeDescription(for route: AdventureRoute) -> String {
+        switch route {
+        case .sunny:
+            "Discovery, mixed topics, and the Sky Castle"
+        case .forest:
+            "Nature, writing, science, and logic"
+        case .rainbow:
+            "Art, music, space, and puzzles"
         }
     }
 }

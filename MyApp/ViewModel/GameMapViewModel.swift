@@ -63,21 +63,21 @@ final class GameMapViewModel {
             LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 260), isBoss: false, trail: .sunny)
         ],
         .forest: [
-            LearningLevel(number: 5, title: "Nature Grove", subject: "Nature", icon: "leaf.fill", color: .green, position: CGPoint(x: 150, y: 450), isBoss: false, trail: .forest),
-            LearningLevel(number: 6, title: "Story Village", subject: "Writing", icon: "pencil.and.outline", color: .brown, position: CGPoint(x: 370, y: 540), isBoss: false, trail: .forest),
-            LearningLevel(number: 7, title: "Science Shore", subject: "Science", icon: "flask.fill", color: .blue, position: CGPoint(x: 590, y: 420), isBoss: false, trail: .forest),
-            LearningLevel(number: 8, title: "Logic Lighthouse", subject: "Logic", icon: "lightbulb.fill", color: .indigo, position: CGPoint(x: 810, y: 500), isBoss: false, trail: .forest)
+            LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 450), isBoss: false, trail: .forest),
+            LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 540), isBoss: false, trail: .forest),
+            LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 420), isBoss: false, trail: .forest),
+            LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 500), isBoss: false, trail: .forest)
         ],
         .rainbow: [
-            LearningLevel(number: 9, title: "Color Canyon", subject: "Art", icon: "paintpalette.fill", color: .pink, position: CGPoint(x: 150, y: 690), isBoss: false, trail: .rainbow),
-            LearningLevel(number: 10, title: "Music Mountain", subject: "Music", icon: "music.note", color: .purple, position: CGPoint(x: 370, y: 780), isBoss: false, trail: .rainbow),
-            LearningLevel(number: 11, title: "Space Station", subject: "Space", icon: "moon.stars.fill", color: .blue, position: CGPoint(x: 590, y: 660), isBoss: false, trail: .rainbow),
-            LearningLevel(number: 12, title: "Puzzle Palace", subject: "Problem Solving", icon: "puzzlepiece.fill", color: .teal, position: CGPoint(x: 810, y: 740), isBoss: false, trail: .rainbow)
+            LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 690), isBoss: false, trail: .rainbow),
+            LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 780), isBoss: false, trail: .rainbow),
+            LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 660), isBoss: false, trail: .rainbow),
+            LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 740), isBoss: false, trail: .rainbow)
         ]
     ]
 
     let boss = LearningLevel(
-        number: 13,
+        number: 5,
         title: "Quiz Dragon",
         subject: "Final Challenge",
         icon: "flame.fill",

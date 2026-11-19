@@ -2,7 +2,10 @@ import SwiftUI
 
 struct CompletionOverlayView: View {
     let level: LearningLevel
+    let hasNewItem: Bool
     let onReturnToWardrobe: () -> Void
+    let onCheckBackpack: () -> Void
+    let onContinue: () -> Void
 
     var body: some View {
         ZStack {
@@ -22,12 +25,28 @@ struct CompletionOverlayView: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
-                Button("Return to Wardrobe", action: onReturnToWardrobe)
-                    .font(.headline.bold())
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 22)
-                    .padding(.vertical, 13)
-                    .background(.indigo, in: Capsule())
+                if level.isBoss {
+                    Button("Return to Wardrobe", action: onReturnToWardrobe)
+                        .font(.headline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 13)
+                        .background(.indigo, in: Capsule())
+                } else if hasNewItem {
+                    Button("Check Backpack", action: onCheckBackpack)
+                        .font(.headline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 13)
+                        .background(.indigo, in: Capsule())
+                } else {
+                    Button("Continue", action: onContinue)
+                        .font(.headline.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 13)
+                        .background(.indigo, in: Capsule())
+                }
             }
             .padding(28)
             .frame(maxWidth: 420)

@@ -48,13 +48,17 @@ struct PrizeWheelView: View {
                     Text("Answer a marine biology, music, or biomedical toxicity question to earn a spin!")
                         .font(.title3.bold())
                         .multilineTextAlignment(.center)
-
-                    wheel
+                        .foregroundStyle(.white)
+                        .padding(.vertical, 14)
+                        .frame(maxWidth: .infinity)
+                        .background(viewModel.level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
 
                     if let wonPrize = viewModel.wonPrize {
                         prizeResult(wonPrize)
+                        wheel
                     } else {
                         questionCard
+                        wheel
                     }
                 }
                 .padding()

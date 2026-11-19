@@ -3,8 +3,11 @@ import SwiftUI
 struct LevelTesterView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var completedLevel: LearningLevel?
+    @State private var showsBackpack = false
+    @State private var completedWithNewItem = false
     let levels: [LearningLevel]
     let avatar: PlayerAvatar
+    let backpackItems: [WheelPrize]
     let onPrizeWon: (WheelPrize) -> Void
     let onRoundComplete: (LearningLevel) -> Void
     let onOpenWardrobe: () -> Void
@@ -20,11 +23,18 @@ struct LevelTesterView: View {
                             onRoundComplete(level)
                             completedLevel = level
                         },
-                        onPrizeWon: onPrizeWon
+                        onPrizeWon: { prize in
+                            let isNewItem = !backpackItems.contains(where: { $0.title == prize.title })
+                            onPrizeWon(prize)
+                            completedWithNewItem = isNewItem
+                        }
                     )
                 } label: {
                     Label("Level \(level.number): \(level.title)", systemImage: level.icon)
                 }
+                .simultaneousGesture(TapGesture().onEnded {
+                    completedWithNewItem = false
+                })
             }
             .navigationTitle("Level Tester")
             .toolbar {
@@ -35,12 +45,29 @@ struct LevelTesterView: View {
         }
         .overlay {
             if let completedLevel {
-                CompletionOverlayView(level: completedLevel) {
-                    self.completedLevel = nil
-                    dismiss()
-                    onOpenWardrobe()
-                }
+                CompletionOverlayView(
+                    level: completedLevel,
+                    hasNewItem: completedWithNewItem,
+                    onReturnToWardrobe: {
+                        self.completedLevel = nil
+                        dismiss()
+                        onOpenWardrobe()
+                    },
+                    onCheckBackpack: {
+                        self.completedLevel = nil
+                        completedWithNewItem = false
+                        showsBackpack = true
+                    },
+                    onContinue: {
+                        self.completedLevel = nil
+                        completedWithNewItem = false
+                    }
+                )
             }
+        }
+        .sheet(isPresented: $showsBackpack) {
+            BackpackContentsView(items: backpackItems)
+                .presentationDetents([.medium, .large])
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             HStack {
