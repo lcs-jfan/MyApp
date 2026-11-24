@@ -1,3 +1,9 @@
+//  PrizeWheelView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot emphasized the wheel instructions and reorganized the question and reward layout.
+
 import SwiftUI
 
 struct PrizeWheelView: View {
@@ -53,6 +59,7 @@ struct PrizeWheelView: View {
                         .frame(maxWidth: .infinity)
                         .background(viewModel.level.color.gradient, in: RoundedRectangle(cornerRadius: 18))
 
+                    // Show the reward only after a spin; otherwise keep the current question actionable.
                     if let wonPrize = viewModel.wonPrize {
                         prizeResult(wonPrize)
                         wheel
@@ -196,6 +203,7 @@ struct PrizeWheelView: View {
     }
 
     private func spinWheel() {
+        // Animate a full rotation before revealing the randomly selected prize.
         withAnimation(.easeOut(duration: 2.2)) {
             wheelRotation += Double.random(in: 1080...1800)
         }

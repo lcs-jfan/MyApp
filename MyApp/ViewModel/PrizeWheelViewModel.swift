@@ -1,3 +1,9 @@
+//  PrizeWheelViewModel.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot connected prize-wheel rounds to fresh, non-repeating topic questions.
+
 import Observation
 import SwiftUI
 
@@ -66,6 +72,7 @@ final class PrizeWheelViewModel {
     }
 
     func spin() {
+        // A prize can be awarded only once, and only after a correct response.
         guard correctAnswerFound, !hasSpun else {
             return
         }

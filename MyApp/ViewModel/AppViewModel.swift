@@ -1,3 +1,9 @@
+//  AppViewModel.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot added persistent prize, avatar, and round state.
+
 import Foundation
 import Observation
 
@@ -16,6 +22,7 @@ final class AppViewModel {
     var collectedPrizes: [WheelPrize] = []
     private(set) var roundNumber = 1
 
+    // Restore the player's saved appearance, collection, and round when the app launches.
     init() {
         let defaults = UserDefaults.standard
 
@@ -51,6 +58,7 @@ final class AppViewModel {
         UserDefaults.standard.set(roundNumber, forKey: StorageKey.roundNumber)
     }
 
+    // Avoid duplicate collection entries, apply the prize to the avatar, and save both.
     func collect(prize: WheelPrize) {
         if !collectedPrizes.contains(where: { $0.title == prize.title }) {
             collectedPrizes.append(prize)
@@ -72,6 +80,7 @@ final class AppViewModel {
         defaults.set(avatar.outfit.rawValue, forKey: StorageKey.avatarOutfit)
     }
 
+    // Defaults are always available; other choices unlock only after their prize is collected.
     func isUnlocked(_ outfit: Outfit) -> Bool {
         outfit == .explorer || collectedPrizes.contains {
             guard case .outfit(let unlockedOutfit) = $0.kind else {

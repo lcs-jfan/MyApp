@@ -1,3 +1,9 @@
+//  AnatomyActivityView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot helped refine the whale diagram activity with hidden targets and pulsing guidance.
+
 import SwiftUI
 
 struct AnatomyActivityView: View {
@@ -91,6 +97,7 @@ struct AnatomyActivityView: View {
             ZStack {
                 whaleIllustration
 
+                // Highlight the requested body part while keeping all tap targets visually hidden.
                 Circle()
                     .fill(.yellow.opacity(highlightPulse ? 0.12 : 0.24))
                     .frame(width: 62, height: 62)
@@ -270,6 +277,7 @@ struct AnatomyActivityView: View {
     }
 
     private func select(_ part: AnatomyPart) {
+        // Correct picks advance the activity; incorrect picks cost one health point.
         guard !completedPartIDs.contains(part.id) else {
             return
         }

@@ -1,3 +1,9 @@
+//  MapRoute.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot used route names, icons, and colors in the map route-selection overlay.
+
 import SwiftUI
 
 enum AdventureRoute: String, CaseIterable, Identifiable {

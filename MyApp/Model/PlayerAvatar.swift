@@ -1,6 +1,13 @@
+//  PlayerAvatar.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot helped preserve unlocked avatar appearance choices across app launches.
+
 import SwiftUI
 
 struct PlayerAvatar {
+    // These selections are saved independently and combined when drawing the avatar.
     var skinTone: SkinTone = .sunny
     var hair: HairStyle = .curly
     var outfit: Outfit = .explorer

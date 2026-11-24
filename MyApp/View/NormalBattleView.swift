@@ -1,3 +1,9 @@
+//  NormalBattleView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot did not make direct changes to this file.
+
 import SwiftUI
 
 struct NormalBattleView: View {
@@ -69,6 +75,7 @@ struct NormalBattleView: View {
     }
 
     private var answerGrid: some View {
+        // Lock choices after submission so feedback and HP are applied only once per attempt.
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
             ForEach(viewModel.question.answers) { answer in
                 Button {
@@ -98,6 +105,7 @@ struct NormalBattleView: View {
     }
 
     private var feedback: some View {
+        // Offer retry, next-question, or completion navigation based on the submitted answer.
         VStack(spacing: 10) {
             Label(
                 viewModel.answeredCorrectly ? "Correct! Great thinking!" : "Not quite. Try again!",

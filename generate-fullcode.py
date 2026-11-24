@@ -86,6 +86,17 @@ def strip_comments(source: str) -> str:
     return "\n".join(out)
 
 
+def remove_created_by_lines(source: str) -> str:
+    """Remove Xcode-generated comment lines beginning with ``// Created by``."""
+    return "\n".join(
+        line for line in source.split("\n")
+        if not (
+            line.lstrip().startswith("//")
+            and line.lstrip()[2:].lstrip().startswith("Created by")
+        )
+    )
+
+
 def _process_line(line: str, in_block: bool, in_multiline_str: bool):
     """
     Process one line and return (result_line, in_block, in_multiline_str).
@@ -167,7 +178,13 @@ def _process_line(line: str, in_block: bool, in_multiline_str: bool):
                 buf.append(c)
                 i += 1
 
-    result = "".join(buf).rstrip()
+    result = "".join(buf)
+    if result:
+        result = result.rstrip()
+    elif line:
+        # Pygments omits truly empty lines from its highlighted output.
+        # Keep a whitespace placeholder so comment-only lines remain numbered.
+        result = " "
     return result, in_block, in_multiline_str
 
 
@@ -210,6 +227,7 @@ def main():
         parts.append(sep + content)
 
     full_text = "\n".join(parts)          # blank line between files
+    full_text = remove_created_by_lines(full_text)
     no_comments_text = strip_comments(full_text)
 
     # ------------------------------------------------------------------

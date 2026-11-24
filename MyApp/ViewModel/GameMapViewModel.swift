@@ -1,3 +1,9 @@
+//  GameMapViewModel.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot standardized route progression and boss unlocking across the map.
+
 import SwiftUI
 import Observation
 
@@ -15,6 +21,7 @@ final class GameMapViewModel {
         completedLevelIDs.insert(level.id)
     }
 
+    // A confirmed route gates its first level; each later level and the boss depend on completion.
     func isUnlocked(_ level: LearningLevel) -> Bool {
         guard isRouteConfirmed else {
             return false
@@ -55,24 +62,25 @@ final class GameMapViewModel {
         return "Complete Level \(routeLevels[levelIndex - 1].number) first"
     }
 
+    // Each route repeats the same four activities while placing them on a separate trail.
     let levelsByRoute: [AdventureRoute: [LearningLevel]] = [
         .sunny: [
             LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 210), isBoss: false, trail: .sunny),
             LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 300), isBoss: false, trail: .sunny),
             LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 180), isBoss: false, trail: .sunny),
-            LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 260), isBoss: false, trail: .sunny)
+            LearningLevel(number: 4, title: "Campfire", subject: "Reward", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 260), isBoss: false, trail: .sunny)
         ],
         .forest: [
             LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 450), isBoss: false, trail: .forest),
             LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 540), isBoss: false, trail: .forest),
             LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 420), isBoss: false, trail: .forest),
-            LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 500), isBoss: false, trail: .forest)
+            LearningLevel(number: 4, title: "Campfire", subject: "Reward", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 500), isBoss: false, trail: .forest)
         ],
         .rainbow: [
             LearningLevel(number: 1, title: "Discovery Lab", subject: "Biomedical Toxicity", icon: "cross.case.fill", color: .teal, position: CGPoint(x: 150, y: 690), isBoss: false, trail: .rainbow),
             LearningLevel(number: 2, title: "Prize Wheel", subject: "Topic Mix", icon: "circle.dotted.and.circle", color: .pink, position: CGPoint(x: 370, y: 780), isBoss: false, trail: .rainbow),
             LearningLevel(number: 3, title: "Topic Quest", subject: "Choose a Topic", icon: "square.grid.2x2.fill", color: .blue, position: CGPoint(x: 590, y: 660), isBoss: false, trail: .rainbow),
-            LearningLevel(number: 4, title: "Sky Castle", subject: "Mixed Quiz", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 740), isBoss: false, trail: .rainbow)
+            LearningLevel(number: 4, title: "Campfire", subject: "Reward", icon: "star.fill", color: .purple, position: CGPoint(x: 810, y: 740), isBoss: false, trail: .rainbow)
         ]
     ]
 

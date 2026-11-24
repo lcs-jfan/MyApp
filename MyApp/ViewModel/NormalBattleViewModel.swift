@@ -1,3 +1,9 @@
+//  NormalBattleViewModel.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot expanded topic question banks and added recent-question tracking.
+
 import Foundation
 import Observation
 
@@ -41,6 +47,7 @@ final class NormalBattleViewModel {
         return question.isCorrect(selectedAnswer)
     }
 
+    // Record one answer at a time; retries clear the selection without advancing the question.
     func choose(_ answer: AnswerChoice) {
         guard !hasAnswered else {
             return
@@ -69,6 +76,7 @@ final class NormalBattleViewModel {
         questionBank(forLevelNumber: level.number, subject: level.subject)
     }
 
+    // Return the question bank associated with this level or subject.
     static func questionBank(forLevelNumber levelNumber: Int, subject: String = "") -> [BattleQuestion] {
         if levelNumber == 1 {
             return [
@@ -824,6 +832,7 @@ final class NormalBattleViewModel {
         freshQuestionBatch(forLevelNumber: level.number, subject: level.subject, count: count)
     }
 
+    // Prefer unseen prompts; when too few remain, begin another shuffled cycle.
     static func freshQuestionBatch(forLevelNumber levelNumber: Int, subject: String = "", count: Int) -> [BattleQuestion] {
         let storageKey = "shownQuestionPrompts"
         let defaults = UserDefaults.standard
@@ -840,6 +849,7 @@ final class NormalBattleViewModel {
         for question in selected where !updatedShown.contains(question.prompt) {
             updatedShown.append(question.prompt)
         }
+        // Keep recent history bounded so old prompts can eventually reappear.
         if updatedShown.count > 100 {
             updatedShown.removeFirst(updatedShown.count - 100)
         }

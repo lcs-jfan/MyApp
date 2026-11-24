@@ -1,3 +1,9 @@
+//  CompletionOverlayView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot added conditional backpack, continue, and boss wardrobe actions after completion.
+
 import SwiftUI
 
 struct CompletionOverlayView: View {
@@ -25,6 +31,7 @@ struct CompletionOverlayView: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
 
+                // The available action depends on whether this is the boss or a new reward was earned.
                 if level.isBoss {
                     Button("Return to Wardrobe", action: onReturnToWardrobe)
                         .font(.headline.bold())

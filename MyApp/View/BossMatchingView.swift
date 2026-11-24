@@ -1,3 +1,9 @@
+//  BossMatchingView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot made the selected concept in the boss matching activity more visible.
+
 import SwiftUI
 
 struct BossMatchingView: View {
@@ -10,6 +16,7 @@ struct BossMatchingView: View {
     let onFinish: () -> Void
 
     init(onFinish: @escaping () -> Void) {
+        // Keep matching IDs paired while independently shuffling both display columns.
         let shuffledPairs = MatchingPair.bossPairs.shuffled()
         _pairs = State(initialValue: shuffledPairs)
         _definitions = State(initialValue: shuffledPairs.shuffled())
@@ -112,6 +119,7 @@ struct BossMatchingView: View {
     }
 
     private func choose(choiceID: String) {
+        // The first tap selects a concept; the next tap checks its definition.
         guard !matchedIDs.contains(choiceID) else {
             return
         }

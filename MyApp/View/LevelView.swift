@@ -1,3 +1,9 @@
+//  LevelView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot matched level covers and activity navigation to the shared route sequence.
+
 import SwiftUI
 
 struct LevelView: View {
@@ -14,6 +20,7 @@ struct LevelView: View {
             Text(level.title)
                 .font(.largeTitle.bold())
 
+            // Route levels share one activity sequence; the boss uses its own final challenge.
             if level.isBoss {
                 Label("Match concepts with their definitions across all three topic areas.", systemImage: "flame.fill")
                     .font(.title3.bold())

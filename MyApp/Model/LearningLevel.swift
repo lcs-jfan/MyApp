@@ -1,3 +1,9 @@
+//  LearningLevel.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot helped align level identity with route-based map progression.
+
 import SwiftUI
 
 struct LearningLevel: Hashable, Identifiable {
@@ -10,6 +16,7 @@ struct LearningLevel: Hashable, Identifiable {
     let isBoss: Bool
     let trail: AdventureRoute?
 
+    // Include the route in the ID so each route's copy of a level is distinct.
     var id: String {
         "\(trail?.rawValue ?? "boss")-\(number)"
     }

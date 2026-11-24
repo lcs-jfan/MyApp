@@ -1,3 +1,9 @@
+//  WardrobeView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot did not make direct changes to this file.
+
 import SwiftUI
 
 struct WardrobeView: View {
@@ -83,6 +89,7 @@ struct WardrobeView: View {
         }
     }
 
+    // Group unlocked choices first so earned items are easy to find.
     private var orderedSkinTones: [SkinTone] {
         SkinTone.allCases.filter(viewModel.isUnlocked) + SkinTone.allCases.filter { !viewModel.isUnlocked($0) }
     }

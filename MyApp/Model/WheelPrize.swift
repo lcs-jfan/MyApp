@@ -1,3 +1,9 @@
+//  WheelPrize.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot helped persist collected prizes and show new unlocks in the backpack.
+
 import SwiftUI
 
 enum PrizeKind {
@@ -13,6 +19,7 @@ struct WheelPrize: Identifiable {
     let color: Color
     let kind: PrizeKind
 
+    // Keep each prize's display details and unlock effect together for both reward activities.
     static let available = [
         WheelPrize(title: "Science Coat", icon: "cross.case.fill", color: .blue, kind: .outfit(.scientist)),
         WheelPrize(title: "Spiky Hair", icon: "sparkles", color: .orange, kind: .hair(.spikes)),

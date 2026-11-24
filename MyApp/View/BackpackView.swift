@@ -1,3 +1,9 @@
+//  BackpackView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot made the backpack contents view reusable from level-completion rewards.
+
 import SwiftUI
 
 struct BackpackView: View {
@@ -20,6 +26,7 @@ struct BackpackView: View {
                 }
         }
         .accessibilityLabel("Backpack: \(items.count) item\(items.count == 1 ? "" : "s")")
+        // Present the collection without navigating away from the current map or activity.
         .sheet(isPresented: $showsContents) {
             BackpackContentsView(items: items)
         }
@@ -33,6 +40,7 @@ struct BackpackContentsView: View {
     var body: some View {
         NavigationStack {
             Group {
+                // Give an empty-state explanation until the player has earned a prize.
                 if items.isEmpty {
                     ContentUnavailableView(
                         "Backpack is empty",

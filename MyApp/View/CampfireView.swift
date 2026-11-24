@@ -1,3 +1,9 @@
+//  CampfireView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot did not make direct changes to this file.
+
 import SwiftUI
 
 struct CampfireView: View {
@@ -33,6 +39,7 @@ struct CampfireView: View {
                 if let reward {
                     rewardCard(reward)
                 } else {
+                    // The player chooses exactly one reward: restore health or collect an item.
                     HStack(spacing: 14) {
                         Button {
                             gameState.restoreHP(by: 3)

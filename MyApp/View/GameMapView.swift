@@ -1,3 +1,9 @@
+//  GameMapView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot added route selection, level-completion actions, and backpack access on the map.
+
 import SwiftUI
 
 struct GameMapView: View {
@@ -39,6 +45,7 @@ struct GameMapView: View {
 
                         ForEach(viewModel.allLevels) { level in
                             let isCompleted = viewModel.completedLevelIDs.contains(level.id)
+                            // Only unlocked, incomplete nodes navigate into a level.
                             if viewModel.isUnlocked(level) && !isCompleted {
                                 NavigationLink(value: level) {
                                     LevelNode(level: level)
@@ -153,6 +160,7 @@ struct GameMapView: View {
                 .background(.regularMaterial)
             }
             .navigationDestination(for: LearningLevel.self) { level in
+                // Returning from an activity records completion before showing its overlay.
                 LevelView(
                     level: level,
                     avatar: avatar,
@@ -221,6 +229,7 @@ struct GameMapView: View {
     }
 
     private var routeSelectionOverlay: some View {
+        // The modal commits one route before allowing the player to enter its level sequence.
         ZStack {
             Color.black.opacity(0.58)
                 .ignoresSafeArea()

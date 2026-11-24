@@ -1,3 +1,9 @@
+//  TopicSelectionView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot added topic diagrams to the Level 3 topic-selection page.
+
 import SwiftUI
 
 struct TopicSelectionView: View {
@@ -63,6 +69,7 @@ struct TopicSelectionView: View {
     }
 
     private var topicDiagramStrip: some View {
+        // Preview each subject with a small, self-contained diagram drawn in Canvas.
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 topicDiagram(title: "Dose-Response", color: .teal) {
@@ -153,6 +160,7 @@ struct TopicSelectionView: View {
         isAvailable: Bool = true,
         @ViewBuilder destination: () -> Destination = { EmptyView() }
     ) -> some View {
+        // Available topics navigate to an activity; unavailable ones remain visible as previews.
         if isAvailable {
             NavigationLink {
                 destination()

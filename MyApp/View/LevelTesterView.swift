@@ -1,3 +1,9 @@
+//  LevelTesterView.swift
+//  MyApp
+//
+//  Created by Fan Yiming on 2026-11-04.
+//  GitHub Copilot added completion feedback and backpack access to the level tester.
+
 import SwiftUI
 
 struct LevelTesterView: View {
@@ -15,6 +21,7 @@ struct LevelTesterView: View {
     var body: some View {
         NavigationStack {
             List(levels) { level in
+                // Reuse the production level flow while exposing every level for manual testing.
                 NavigationLink {
                     LevelView(
                         level: level,
